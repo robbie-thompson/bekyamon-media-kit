@@ -11,14 +11,20 @@ npm run dev
 
 Use the design switcher in the site header, or open a direction directly:
 
-- `/?design=editorial`
-- `/?design=dashboard`
-- `/?design=portfolio`
+- `/mediakit/?design=editorial`
+- `/mediakit/?design=dashboard`
+- `/mediakit/?design=portfolio`
 
 ## Cloudflare Pages
 
 - Build command: `npm run build`
 - Output directory: `dist`
-- Node version: 20 or newer
+- Node version: 22
+- Custom domain: `bekyamon.live`
+- Production URL: `https://bekyamon.live/mediakit/`
+
+The Vite build is written to `dist/mediakit`, while Cloudflare metadata is
+written to the root of `dist`. Keep the Pages output directory set to `dist`;
+using `dist/mediakit` would publish the site at the domain root instead.
 
 All audience figures, content titles, brand marks and biography copy are placeholders.

@@ -1,5 +1,7 @@
-import { createIcons, Mail, Download, ArrowUpRight, Eye, Play, MapPin, Users, Instagram, Youtube, Twitch, Music2, ChevronDown, LayoutGrid, BookOpen, PanelsTopLeft } from 'lucide';
+import { createIcons, Mail, ArrowUpRight, Eye, Play, MapPin, Users, Instagram, Youtube, Twitch, Music2, ChevronDown, LayoutGrid, BookOpen, PanelsTopLeft } from 'lucide';
 import './styles.css';
+
+const imageUrl = (filename) => `${import.meta.env.BASE_URL}images/${filename}`;
 
 const designs = {
   editorial: { label: 'Editorial', number: '01', icon: 'book-open' },
@@ -18,9 +20,9 @@ const platformData = [
     engagement: '7.8%',
     description: 'Style, everyday life and bright visual storytelling for an audience that comes for a candid point of view.',
     content: [
-      { title: 'A slow afternoon by the sea', format: 'Reel', views: '842K', image: '/images/bekyamon-close.jpg' },
-      { title: 'Three ways I style summer', format: 'Carousel', views: '316K', image: '/images/bekyamon-profile.jpg' },
-      { title: 'What I actually packed', format: 'Reel', views: '691K', image: '/images/bekyamon-wide.jpg' },
+      { title: 'A slow afternoon by the sea', format: 'Reel', views: '842K', image: imageUrl('bekyamon-close.jpg') },
+      { title: 'Three ways I style summer', format: 'Carousel', views: '316K', image: imageUrl('bekyamon-profile.jpg') },
+      { title: 'What I actually packed', format: 'Reel', views: '691K', image: imageUrl('bekyamon-wide.jpg') },
     ],
     locations: [['United Kingdom', 48], ['United States', 22], ['Australia', 8]],
     genders: [['Women', 72], ['Men', 24], ['Other', 4]],
@@ -35,9 +37,9 @@ const platformData = [
     engagement: '10.4%',
     description: 'Fast, funny and personality-led edits spanning fashion, culture and the moments worth sharing with friends.',
     content: [
-      { title: 'POV: the outfit finally works', format: 'Video', views: '1.8M', image: '/images/bekyamon-profile.jpg' },
-      { title: 'Beach day reality check', format: 'Video', views: '934K', image: '/images/bekyamon-wide.jpg' },
-      { title: 'This changed my morning', format: 'Video', views: '712K', image: '/images/bekyamon-close.jpg' },
+      { title: 'POV: the outfit finally works', format: 'Video', views: '1.8M', image: imageUrl('bekyamon-profile.jpg') },
+      { title: 'Beach day reality check', format: 'Video', views: '934K', image: imageUrl('bekyamon-wide.jpg') },
+      { title: 'This changed my morning', format: 'Video', views: '712K', image: imageUrl('bekyamon-close.jpg') },
     ],
     locations: [['United Kingdom', 52], ['United States', 19], ['Ireland', 7]],
     genders: [['Women', 76], ['Men', 20], ['Other', 4]],
@@ -52,9 +54,9 @@ const platformData = [
     engagement: '6.2%',
     description: 'Longer-form stories and considered recommendations, made for an audience who stays for the full conversation.',
     content: [
-      { title: 'A very honest summer reset', format: 'Vlog · 18:42', views: '284K', image: '/images/bekyamon-wide.jpg' },
-      { title: 'Things I wish I knew sooner', format: 'Video · 14:08', views: '197K', image: '/images/bekyamon-close.jpg' },
-      { title: 'Come away with me for 48 hours', format: 'Vlog · 22:16', views: '163K', image: '/images/bekyamon-profile.jpg' },
+      { title: 'A very honest summer reset', format: 'Vlog · 18:42', views: '284K', image: imageUrl('bekyamon-wide.jpg') },
+      { title: 'Things I wish I knew sooner', format: 'Video · 14:08', views: '197K', image: imageUrl('bekyamon-close.jpg') },
+      { title: 'Come away with me for 48 hours', format: 'Vlog · 22:16', views: '163K', image: imageUrl('bekyamon-profile.jpg') },
     ],
     locations: [['United Kingdom', 44], ['United States', 27], ['Canada', 9]],
     genders: [['Women', 69], ['Men', 26], ['Other', 5]],
@@ -69,9 +71,9 @@ const platformData = [
     engagement: '9.1%',
     description: 'Live conversations, games and unfiltered community moments where viewers become part of the story in real time.',
     content: [
-      { title: 'Cosy games and a proper catch-up', format: 'Stream · 03:18:42', views: '156K', image: '/images/bekyamon-close.jpg' },
-      { title: 'Chat chooses everything I do', format: 'Stream · 02:46:19', views: '121K', image: '/images/bekyamon-profile.jpg' },
-      { title: 'Late-night community games', format: 'Stream · 04:02:07', views: '98K', image: '/images/bekyamon-wide.jpg' },
+      { title: 'Cosy games and a proper catch-up', format: 'Stream · 03:18:42', views: '156K', image: imageUrl('bekyamon-close.jpg') },
+      { title: 'Chat chooses everything I do', format: 'Stream · 02:46:19', views: '121K', image: imageUrl('bekyamon-profile.jpg') },
+      { title: 'Late-night community games', format: 'Stream · 04:02:07', views: '98K', image: imageUrl('bekyamon-wide.jpg') },
     ],
     locations: [['United Kingdom', 46], ['United States', 25], ['Canada', 8]],
     genders: [['Women', 67], ['Men', 28], ['Other', 5]],
@@ -195,7 +197,7 @@ function editorial() {
             <p class="bio"><span>Placeholder bio —</span> Bekyamon is a UK-based creator known for warm, honest storytelling across style, culture and everyday life. Her community comes for the wit and stays for the point of view.</p>
             ${contactLinks()}
           </div>
-          <figure class="hero-image editorial-hero__image"><img src="/images/bekyamon-profile.jpg" alt="Bekyamon standing on a sunny beach" /></figure>
+          <figure class="hero-image editorial-hero__image"><img src="${imageUrl('bekyamon-profile.jpg')}" alt="Bekyamon standing on a sunny beach" /></figure>
           <div class="hero-stat hero-stat--one"><strong>1.55M</strong><span>Combined following</span></div>
           <div class="hero-stat hero-stat--two"><strong>1.08M</strong><span>Average cross-platform views</span></div>
         </section>
@@ -252,7 +254,7 @@ function dashboard() {
         <div class="dashboard-main">
           <section class="dashboard-hero">
             <div class="dashboard-profile">
-              <img src="/images/bekyamon-close.jpg" alt="Portrait of Bekyamon on the beach" />
+              <img src="${imageUrl('bekyamon-close.jpg')}" alt="Portrait of Bekyamon on the beach" />
               <div><p class="eyebrow">Creator overview</p><h1>Hi, I’m<br>Bekyamon.</h1></div>
             </div>
             <p class="dashboard-bio"><span>Placeholder bio —</span> UK creator with a sharp eye for the small moments. I make honest, personality-led content across style, culture and everyday life.</p>
@@ -302,7 +304,7 @@ function portfolio() {
       ${topBar('portfolio')}
       <main id="content">
         <section class="portfolio-hero">
-          <figure><img src="/images/bekyamon-wide.jpg" alt="Bekyamon standing on a bright beach" /></figure>
+          <figure><img src="${imageUrl('bekyamon-wide.jpg')}" alt="Bekyamon standing on a bright beach" /></figure>
           <div class="portfolio-hero__copy">
             <p class="eyebrow">Bekyamon · Creator media kit</p>
             <h1>Making the<br>everyday <em>matter.</em></h1>
@@ -335,7 +337,7 @@ function getDesign() {
 function render(design = getDesign()) {
   document.documentElement.dataset.design = design;
   document.querySelector('#app').innerHTML = renderers[design]();
-  createIcons({ icons: { Mail, Download, ArrowUpRight, Eye, Play, MapPin, Users, Instagram, Youtube, Twitch, Music2, ChevronDown, LayoutGrid, BookOpen, PanelsTopLeft } });
+  createIcons({ icons: { Mail, ArrowUpRight, Eye, Play, MapPin, Users, Instagram, Youtube, Twitch, Music2, ChevronDown, LayoutGrid, BookOpen, PanelsTopLeft } });
   bindInteractions(design);
 }
 
