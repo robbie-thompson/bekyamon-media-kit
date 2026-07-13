@@ -1,6 +1,6 @@
 # Bekyamon Media Kit
 
-Three responsive design directions for a one-page creator media kit, built with Vite and ready for Cloudflare Pages.
+A responsive dashboard-style creator media kit, built with Vite and ready for Cloudflare Pages.
 
 ## Local development
 
@@ -8,12 +8,6 @@ Three responsive design directions for a one-page creator media kit, built with 
 npm install
 npm run dev
 ```
-
-Use the design switcher in the site header, or open a direction directly:
-
-- `/mediakit/?design=editorial`
-- `/mediakit/?design=dashboard`
-- `/mediakit/?design=portfolio`
 
 ## Cloudflare Pages
 
