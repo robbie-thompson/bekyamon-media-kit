@@ -1,5 +1,11 @@
 export const PLATFORM_IDS = ['instagram', 'tiktok', 'youtube', 'twitch'];
 
+export const CONTENT_IMAGES = [
+  { value: 'bekyamon-close.jpg', label: 'Close portrait' },
+  { value: 'bekyamon-profile.jpg', label: 'Profile portrait' },
+  { value: 'bekyamon-wide.jpg', label: 'Wide portrait' },
+];
+
 export const DEFAULT_DATA = {
   updatedLabel: 'July 2026',
   overview: {

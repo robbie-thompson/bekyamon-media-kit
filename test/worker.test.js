@@ -100,6 +100,20 @@ test('validation normalises duplicated order and rejects unsafe image values', (
   const data = structuredClone(DEFAULT_DATA);
   data.platforms[0].content[0].image = 'javascript:alert(1)';
   assert.throws(() => internals.validateData(data), /Image must be/);
+  data.platforms[0].content[0].image = 'https://example.com/unavailable.jpg';
+  assert.throws(() => internals.validateData(data), /available media-kit images/);
+});
+
+test('dashboard is served only from /admindashboard with image dropdowns', async () => {
+  const runtime = env();
+  runtime.ASSETS.fetch = () => new Response('not found', { status: 404 });
+  const dashboard = await worker.fetch(new Request('https://example.com/admindashboard'), runtime);
+  assert.equal(dashboard.status, 200);
+  const html = await dashboard.text();
+  assert.match(html, /<select aria-label="Image"/);
+  assert.match(html, /Close portrait/);
+  const oldRoute = await worker.fetch(new Request('https://example.com/admin'), runtime);
+  assert.equal(oldRoute.status, 404);
 });
 
 test('nested media-kit routes fall back to the built SPA entry point', async () => {
