@@ -1,5 +1,5 @@
 import { adminPage } from './admin-page.js';
-import { DEFAULT_DATA, PLATFORM_IDS, defaultLayout } from './default-data.js';
+import { CONTENT_IMAGES, DEFAULT_DATA, PLATFORM_IDS, defaultLayout } from './default-data.js';
 
 const DATA_KEY = 'mediakit:data';
 const LAYOUT_PREFIX = 'mediakit:layout:';
@@ -17,7 +17,7 @@ export default {
     const url = new URL(request.url);
     try {
       if (url.pathname.startsWith('/api/')) return await apiRouter(request, env, url);
-      if (url.pathname === '/admin' || url.pathname === '/admin/') {
+      if (url.pathname === '/admindashboard' || url.pathname === '/admindashboard/') {
         return new Response(adminPage(), { headers: securityHeaders('text/html; charset=utf-8') });
       }
       if (url.pathname === '/') return env.ASSETS.fetch(request);
@@ -231,8 +231,8 @@ function cleanIdentifier(value, fallback) {
 }
 function cleanImage(value) {
   const image = cleanText(value, 500);
-  if (/^https:\/\//i.test(image) || /^[a-zA-Z0-9][a-zA-Z0-9._/-]*$/.test(image)) return image;
-  throw httpError('Image must be an HTTPS URL or a public image filename', 400);
+  if (CONTENT_IMAGES.some(({ value: availableImage }) => availableImage === image)) return image;
+  throw httpError('Image must be selected from the available media-kit images', 400);
 }
 function normaliseSlug(value) {
   const slug = String(value || '').toLowerCase().trim();
