@@ -56,8 +56,15 @@ figure, h1, h2, h3, h4, p { margin: 0; }
 
 .brand-strip { padding: 44px 3.5vw 40px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .brand-row { display: grid; grid-template-columns: repeat(6, 1fr); margin-top: 24px; }
-.brand-mark { min-height: 64px; border-left: 1px solid var(--line); display: grid; place-items: center; color: #73726c; font: 600 13px/1 var(--display); letter-spacing: .08em; }
+.brand-mark { --logo-height: 30px; min-height: 64px; padding: 15px clamp(12px, 2vw, 30px); border-left: 1px solid var(--line); display: grid; place-items: center; }
 .brand-mark:first-child { border-left: 0; }
+.brand-mark img { width: auto; height: var(--logo-height); max-width: 112px; object-fit: contain; opacity: .57; }
+.brand-mark--adobe { --logo-height: 31px; }
+.brand-mark--spotify { --logo-height: 32px; }
+.brand-mark--nike { --logo-height: 18px; }
+.brand-mark--glossier { --logo-height: 34px; }
+.brand-mark--logitech { --logo-height: 34px; }
+.brand-mark--gymshark { --logo-height: 25px; }
 .platform-nav { display: flex; gap: 8px; flex-wrap: wrap; }
 .platform-nav a { padding: 10px 14px; border: 1px solid var(--line); text-decoration: none; font-size: 12px; border-radius: 999px; display: flex; gap: 8px; align-items: center; }
 .platform-nav a:hover { background: var(--ink); color: var(--paper); }
@@ -240,7 +247,8 @@ figure, h1, h2, h3, h4, p { margin: 0; }
   .design-menu { right: 16px; top: 58px; }
   .brand-strip { padding: 35px 18px; }
   .brand-row { grid-template-columns: repeat(3, 1fr); }
-  .brand-mark { min-height: 54px; border-bottom: 1px solid var(--line); font-size: 10px; }
+  .brand-mark { min-height: 58px; padding: 13px 18px; border-bottom: 1px solid var(--line); }
+  .brand-mark img { max-width: 92px; }
   .brand-mark:nth-child(4) { border-left: 0; }
   .brand-mark:nth-child(n+4) { border-bottom: 0; }
   .site-footer { padding: 80px 18px 24px; }

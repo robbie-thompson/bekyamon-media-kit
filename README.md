@@ -27,4 +27,4 @@ The Vite build is written to `dist/mediakit`, while Cloudflare metadata is
 written to the root of `dist`. Keep the Pages output directory set to `dist`;
 using `dist/mediakit` would publish the site at the domain root instead.
 
-All audience figures, content titles, brand marks and biography copy are placeholders.
+All audience figures, content titles, brand partnerships and biography copy are placeholders.

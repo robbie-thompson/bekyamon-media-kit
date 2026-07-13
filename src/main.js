@@ -80,7 +80,14 @@ const platformData = [
   },
 ];
 
-const brands = ['ADOBE', 'SPOTIFY', 'NIKE', 'GLOSSIER', 'LOGITECH', 'GYMSHARK'];
+const brands = [
+  { id: 'adobe', name: 'Adobe', logo: imageUrl('logos/adobe.svg') },
+  { id: 'spotify', name: 'Spotify', logo: imageUrl('logos/spotify.svg') },
+  { id: 'nike', name: 'Nike', logo: imageUrl('logos/nike.svg') },
+  { id: 'glossier', name: 'Glossier', logo: imageUrl('logos/glossier.svg') },
+  { id: 'logitech', name: 'Logitech', logo: imageUrl('logos/logitech.svg') },
+  { id: 'gymshark', name: 'Gymshark', logo: imageUrl('logos/gymshark.svg') },
+];
 
 function icon(name, size = 16) {
   return `<i data-lucide="${name}" width="${size}" height="${size}" aria-hidden="true"></i>`;
@@ -98,8 +105,11 @@ function contactLinks(compact = false) {
 function brandStrip(title = 'Previously partnered with') {
   return `
     <section class="brand-strip" aria-labelledby="brand-heading">
-      <p class="eyebrow" id="brand-heading">${title} <span>· Placeholder logos</span></p>
-      <div class="brand-row">${brands.map((brand) => `<div class="brand-mark">${brand}</div>`).join('')}</div>
+      <p class="eyebrow" id="brand-heading">${title}</p>
+      <div class="brand-row">${brands.map((brand) => `
+        <div class="brand-mark brand-mark--${brand.id}">
+          <img src="${brand.logo}" alt="${brand.name}" />
+        </div>`).join('')}</div>
     </section>`;
 }
 
