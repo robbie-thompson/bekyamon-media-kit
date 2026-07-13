@@ -5,14 +5,18 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:worker": "npm run build && wrangler dev",
     "build": "rm -rf dist && vite build && cp cloudflare/_headers cloudflare/404.html dist/",
     "preview": "vite preview",
-    "check": "npm run build"
+    "test": "node --test",
+    "check": "npm run test && npm run build",
+    "deploy": "npm run check && wrangler deploy"
   },
   "dependencies": {
     "lucide": "^0.468.0"
   },
   "devDependencies": {
-    "vite": "^6.0.7"
+    "vite": "^6.0.7",
+    "wrangler": "^4.0.0"
   }
 }
