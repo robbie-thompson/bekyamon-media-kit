@@ -1,5 +1,5 @@
 import { adminPage } from './admin-page.js';
-import { CONTENT_IMAGES, DEFAULT_DATA, PLATFORM_IDS, defaultLayout } from './default-data.js';
+import { CONTENT_IMAGES, DEFAULT_DATA, PLATFORM_IDS, PLATFORM_METRICS, defaultLayout } from './default-data.js';
 
 const DATA_KEY = 'mediakit:data';
 const LAYOUT_PREFIX = 'mediakit:layout:';
@@ -20,20 +20,21 @@ export default {
       if (url.pathname === '/admindashboard' || url.pathname === '/admindashboard/') {
         return new Response(adminPage(), { headers: securityHeaders('text/html; charset=utf-8') });
       }
-      if (url.pathname === '/') return env.ASSETS.fetch(request);
-      const isMediaKitPage = /^\/mediakit(?:\/[a-z0-9-]+)?\/?$/.test(url.pathname);
+      // Reject URLs without a presentation slug before serving static assets.
+      if (['/', '/index.html', '/mediakit', '/mediakit/', '/mediakit/index.html'].includes(url.pathname)) {
+        return new Response(request.method === 'HEAD' ? null : 'Not found', { status: 404 });
+      }
 
-      // Serve the app entry point for default and saved presentation URLs.
-      if ((request.method === 'GET' || request.method === 'HEAD') && isMediaKitPage) {
-        const indexUrl = new URL('/', url);
+      const isMediaKitPage = /^\/mediakit\/[a-z0-9-]+\/?$/.test(url.pathname);
+      const isPageRequest = request.method === 'GET' || request.method === 'HEAD';
+
+      if (isPageRequest && isMediaKitPage) {
+        // Vite serves the source entry at root, while production uses the build directory.
+        const indexPath = import.meta.env?.DEV ? '/' : '/mediakit/';
+        const indexUrl = new URL(indexPath, url);
         return env.ASSETS.fetch(new Request(indexUrl, request));
       }
-      if ((request.method === 'GET' || request.method === 'HEAD') && url.pathname.startsWith('/mediakit/')) {
-        const asset = await env.ASSETS.fetch(request);
-        if (asset.status !== 404) return asset;
-        const indexUrl = new URL('/', url);
-        return env.ASSETS.fetch(new Request(indexUrl, request));
-      }
+
       return env.ASSETS.fetch(request);
     } catch (error) {
       if (!error.status) console.error(error);
@@ -155,10 +156,11 @@ function validateData(input) {
     name: cleanText(platform.name, 40),
     handle: cleanText(platform.handle, 80),
     icon: DEFAULT_DATA.platforms.find((item) => item.id === platform.id).icon,
-    followers: cleanText(platform.followers, 30),
-    avgViews: cleanText(platform.avgViews, 30),
-    engagement: cleanText(platform.engagement, 30),
+    ...Object.fromEntries(PLATFORM_METRICS[platform.id].map(([key]) => [
+      key, cleanText(platform[key] ?? '—', 30),
+    ])),
     locations: validateBreakdown(platform.locations),
+    gendersLabel: cleanText(platform.gendersLabel || 'Gender split', 80),
     genders: validateBreakdown(platform.genders),
     content: Array.isArray(platform.content) ? platform.content.slice(0, 12).map((item, index) => ({
       id: cleanIdentifier(item.id, `${platform.id}-${index + 1}`),
@@ -190,11 +192,9 @@ function validateLayout(input, slug) {
     return [id, {
       visible: value.visible !== false,
       handle: value.handle !== false,
-      metrics: {
-        followers: value.metrics?.followers !== false,
-        avgViews: value.metrics?.avgViews !== false,
-        engagement: value.metrics?.engagement !== false,
-      },
+      metrics: Object.fromEntries(PLATFORM_METRICS[id].map(([key]) => [
+        key, value.metrics?.[key] !== false,
+      ])),
       locations: value.locations !== false,
       locationItems: validateItemVisibility(value.locationItems),
       genders: value.genders !== false,

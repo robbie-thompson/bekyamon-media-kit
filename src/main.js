@@ -1,18 +1,7 @@
-import { createIcons, Mail, ArrowUpRight, MapPin, Users, Instagram, Youtube, Twitch, Music2, ChevronDown } from 'lucide';
+import { createIcons, Mail, ArrowUpRight, MapPin, Users, Instagram, Youtube, Twitch, Music2 } from 'lucide';
 import './styles.css';
-import { DEFAULT_DATA } from '../worker/default-data.js';
-
+import { PLATFORM_METRICS } from '../worker/default-data.js';
 const imageUrl = (filename) => `${import.meta.env.BASE_URL}images/${filename}`;
-
-const allVisible = { followers: true, avgViews: true, engagement: true };
-const fallbackProfile = {
-  slug: 'default',
-  overview: { ...DEFAULT_DATA.overview, visible: true, metrics: allVisible },
-  platforms: DEFAULT_DATA.platforms.map((platform) => ({
-    ...platform,
-    visible: { handle: true, metrics: allVisible, locations: true, genders: true, content: true },
-  })),
-};
 
 const brands = [
   { id: 'adobe', name: 'Adobe', logo: imageUrl('logos/adobe.svg') },
@@ -40,7 +29,6 @@ function contactLinks() {
     <div class="contact-links">
       <a class="button button--primary" href="mailto:business@bekyamon.live">${icon('mail')}<span>Email me</span></a>
       <a class="button button--quiet" href="https://www.instagram.com/bekyamon" target="_blank" rel="noreferrer">${icon('instagram')}<span>Instagram</span>${icon('arrow-up-right', 14)}</a>
-      <a class="button button--icon" href="#platforms" aria-label="Explore audience and platform data">${icon('chevron-down')}</a>
     </div>`;
 }
 
@@ -69,32 +57,27 @@ function platformNav(platformData) {
 function footer() {
   return `
     <footer class="site-footer">
-      <p class="eyebrow">Let’s make something good</p>
-      <h2>Have a project<br>in mind?</h2>
       <a class="footer-email" href="mailto:business@bekyamon.live">business@bekyamon.live ${icon('arrow-up-right', 20)}</a>
     </footer>`;
 }
 
 function dashboardPlatform(platform, index) {
-  const metrics = [
-    ['followers', 'Followers', platform.followers],
-    ['avgViews', 'Avg. views', platform.avgViews],
-    ['engagement', 'Engagement', platform.engagement],
-  ].filter(([key]) => platform.visible.metrics[key]);
+  const metrics = PLATFORM_METRICS[platform.id]
+    .filter(([key]) => platform.visible.metrics[key]);
   return `
     <section class="dashboard-platform platform-section" id="${platform.id}">
       <div class="dashboard-platform__header">
         <div class="dashboard-platform__title"><span>${icon(platform.icon, 22)}</span><div><p class="eyebrow">0${index + 1}${platform.visible.handle ? ` · ${escapeHtml(platform.handle)}` : ''}</p><h2>${escapeHtml(platform.name)}</h2></div></div>
       </div>
-      <div class="dashboard-grid">
-        ${metrics.map(([key, label, value], metricIndex) => `<div class="metric-card ${metricIndex === 0 ? 'metric-card--primary' : ''}"><p>${label}</p><strong>${escapeHtml(value)}</strong></div>`).join('')}
+      <div class="dashboard-grid" style="--metric-span: ${6 / (metrics.length || 1)}">
+        ${metrics.map(([key, label], metricIndex) => `<div class="metric-card ${metricIndex === 0 ? 'metric-card--primary' : ''}"><p>${label}</p><strong>${escapeHtml(platform[key] || '—')}</strong></div>`).join('')}
+        ${platform.visible.genders && platform.genders.length ? `<div class="dashboard-audience">
+          <div class="dashboard-card-heading"><div><p class="eyebrow">Community</p><h3>${escapeHtml(platform.gendersLabel || 'Gender split')}</h3></div>${icon('users')}</div>
+          ${progressList(platform.genders)}
+        </div>` : ''}
         ${platform.visible.locations && platform.locations.length ? `<div class="dashboard-audience">
           <div class="dashboard-card-heading"><div><p class="eyebrow">Geography</p><h3>Top locations</h3></div>${icon('map-pin')}</div>
           ${progressList(platform.locations)}
-        </div>` : ''}
-        ${platform.visible.genders && platform.genders.length ? `<div class="dashboard-audience">
-          <div class="dashboard-card-heading"><div><p class="eyebrow">Community</p><h3>Gender split</h3></div>${icon('users')}</div>
-          ${progressList(platform.genders)}
         </div>` : ''}
         ${platform.visible.content && platform.content.length ? `<div class="dashboard-content">
           <div class="dashboard-card-heading"><div><p class="eyebrow">Recent uploads</p><h3>Content performance</h3></div><span>Views</span></div>
@@ -117,8 +100,8 @@ function overview(profile) {
     ['engagement', 'Avg. engagement'],
   ].filter(([key]) => profile.overview.metrics[key]);
   return `<section class="overview-grid overview-grid--${metrics.length}" aria-label="Combined audience overview">
-    <div class="overview-title"><p class="eyebrow">Combined reach</p><h2>At a glance</h2></div>
-    ${metrics.map(([key, label], index) => `<div class="overview-metric"><span>0${index + 1}</span><strong>${escapeHtml(profile.overview[key])}</strong><p>${label}</p></div>`).join('')}
+    <div class="overview-title"><h2>Combined reach</h2></div>
+    ${metrics.map(([key, label]) => `<div class="overview-metric"><strong>${escapeHtml(profile.overview[key])}</strong><p>${label}</p></div>`).join('')}
   </section>`;
 }
 
@@ -128,7 +111,7 @@ function dashboard(profile) {
     <div class="site" id="top">
       <main id="content" class="dashboard-shell">
         <aside class="dashboard-sidebar">
-          <div><p class="eyebrow">Media kit / 2026</p><h2>Bekyamon</h2></div>
+          <div><p class="eyebrow">Media kit / ${new Date().getFullYear()}</p><h2>Bekyamon</h2></div>
           ${platformNav(platformData)}
           <div class="sidebar-contact"><p>Partnership enquiries</p><a href="mailto:business@bekyamon.live">business@bekyamon.live</a></div>
         </aside>
@@ -152,30 +135,35 @@ function dashboard(profile) {
 
 function presentationSlug() {
   const path = window.location.pathname.replace(/\/+$/, '');
-  const match = path.match(/^\/mediakit(?:\/([^/]+))?$/);
-  return match?.[1] || 'default';
+  const match = path.match(/^\/mediakit\/([a-z0-9-]+)$/);
+  return match?.[1] || null;
 }
 
 /**
- * Load a presentation, with bundled starter data for the default media kit.
+ * Load only the presentation explicitly selected by the URL.
  */
 async function loadMediaKit() {
   const slug = presentationSlug();
+
+  if (!slug) {
+    return null;
+  }
+
   try {
     const response = await fetch(`/api/mediakit/${encodeURIComponent(slug)}`);
-    if (response.status === 404) {
-      // Keep the default media kit available when no saved presentation is returned.
-      if (slug === 'default') {
-        return fallbackProfile;
-      }
 
+    if (response.status === 404) {
       return null;
     }
-    if (!response.ok) throw new Error(`Media kit API returned ${response.status}`);
+
+    if (!response.ok) {
+      throw new Error(`Media kit API returned ${response.status}`);
+    }
+
     return await response.json();
   } catch (error) {
     console.warn('Unable to load media kit data:', error);
-    return slug === 'default' ? fallbackProfile : { loadError: true };
+    return { loadError: true };
   }
 }
 
@@ -186,5 +174,5 @@ loadMediaKit().then((profile) => {
     : profile
       ? dashboard(profile)
       : unavailable('Presentation not found', 'This media-kit link isn’t available.', 'Please check the URL or ask for an updated link.');
-  createIcons({ icons: { Mail, ArrowUpRight, MapPin, Users, Instagram, Youtube, Twitch, Music2, ChevronDown } });
+  createIcons({ icons: { Mail, ArrowUpRight, MapPin, Users, Instagram, Youtube, Twitch, Music2 } });
 });

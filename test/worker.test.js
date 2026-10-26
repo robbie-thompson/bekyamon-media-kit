@@ -27,11 +27,11 @@ test('layout filtering controls order, sections and individual content', () => {
   const layout = defaultLayout('twitch-first', 'Twitch first');
   layout.platformOrder = ['twitch', 'youtube', 'instagram', 'tiktok'];
   layout.platforms.instagram.visible = false;
-  layout.platforms.twitch.metrics.engagement = false;
+  layout.platforms.twitch.metrics.avgViewers90d = false;
   layout.platforms.twitch.contentItems['twitch-2'] = false;
   const result = applyLayout(structuredClone(DEFAULT_DATA), layout);
   assert.deepEqual(result.platforms.map(({ id }) => id), ['twitch', 'youtube', 'tiktok']);
-  assert.equal(result.platforms[0].visible.metrics.engagement, false);
+  assert.equal(result.platforms[0].visible.metrics.avgViewers90d, false);
   assert.deepEqual(result.platforms[0].content.map(({ id }) => id), ['twitch-1', 'twitch-3']);
 });
 
@@ -42,6 +42,30 @@ test('public API returns default data and rejects unknown presentation slugs', a
   assert.equal((await defaultResponse.json()).platforms.length, 4);
   const missingResponse = await worker.fetch(new Request('https://example.com/api/mediakit/missing'), runtime);
   assert.equal(missingResponse.status, 404);
+});
+
+test('platform stats preserve the requested metrics and visibility through validation', () => {
+  const data = structuredClone(DEFAULT_DATA);
+  data.platforms[0].views90d = '2.5M';
+  data.platforms[0].interactions90d = '180K';
+  data.platforms[1].likes90d = '420K';
+  data.platforms[2].views90d = '900K';
+  data.platforms[3].totalViews90d = '750K';
+  data.platforms[3].avgViewers90d = '1.2K';
+
+  const layout = defaultLayout();
+  layout.platforms.twitch.metrics.avgViewers90d = false;
+  const result = applyLayout(internals.validateData(data), internals.validateLayout(layout, 'default'));
+
+  assert.equal(result.platforms[0].views90d, '2.5M');
+  assert.equal(result.platforms[0].interactions90d, '180K');
+  assert.equal(result.platforms[1].likes90d, '420K');
+  assert.equal(result.platforms[2].views90d, '900K');
+  assert.deepEqual(Object.keys(result.platforms[2].visible.metrics), ['followers', 'views90d']);
+  assert.equal(result.platforms[3].totalViews90d, '750K');
+  assert.equal(result.platforms[3].avgViewers90d, '1.2K');
+  assert.equal(result.platforms[3].visible.metrics.avgViewers90d, false);
+  assert.equal('engagement' in result.platforms[0], false);
 });
 
 test('password login issues a session that can read and update admin state', async () => {
@@ -119,13 +143,13 @@ test('dashboard is served only from /admindashboard with image dropdowns', async
 test('default and saved media-kit routes serve the app entry point', async () => {
   const runtime = env();
   runtime.ASSETS.fetch = (request) => {
-    assert.equal(new URL(request.url).pathname, '/');
+    assert.equal(new URL(request.url).pathname, '/mediakit/');
     return new Response(request.method === 'HEAD' ? null : '<main>media kit</main>', {
       headers: { 'content-type': 'text/html' },
     });
   };
 
-  for (const path of ['/mediakit', '/mediakit/', '/mediakit/twitch', '/mediakit/twitch/']) {
+  for (const path of ['/mediakit/default', '/mediakit/default/', '/mediakit/twitch', '/mediakit/twitch/']) {
     for (const method of ['GET', 'HEAD']) {
       const response = await worker.fetch(new Request(`https://example.com${path}`, { method }), runtime);
       assert.equal(response.status, 200);
@@ -135,14 +159,17 @@ test('default and saved media-kit routes serve the app entry point', async () =>
   }
 });
 
-test('the domain root serves the media kit without a redirect', async () => {
+test('media-kit URLs require an explicit presentation slug', async () => {
   const runtime = env();
-  runtime.ASSETS.fetch = (request) => {
-    assert.equal(new URL(request.url).pathname, '/');
-    return new Response('<main>media kit</main>', { headers: { 'content-type': 'text/html' } });
+  runtime.ASSETS.fetch = () => {
+    assert.fail('Slugless URLs must not serve the app entry point');
   };
-  const response = await worker.fetch(new Request('https://example.com/'), runtime);
-  assert.equal(response.status, 200);
-  assert.equal(response.headers.get('location'), null);
-  assert.match(await response.text(), /media kit/);
+
+  for (const path of ['/', '/index.html', '/mediakit', '/mediakit/', '/mediakit/index.html']) {
+    for (const method of ['GET', 'HEAD']) {
+      const response = await worker.fetch(new Request(`https://example.com${path}`, { method }), runtime);
+      assert.equal(response.status, 404);
+      assert.equal(response.headers.get('location'), null);
+    }
+  }
 });

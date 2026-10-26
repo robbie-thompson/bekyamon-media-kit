@@ -1,7 +1,8 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig(async ({ command, isPreview }) => ({
-  base: '/',
+  // The development asset binding reads files from the source root.
+  base: command === 'serve' && !isPreview ? '/' : '/mediakit/',
   // Use the Workers runtime with live source files during local development.
   plugins: command === 'serve' && !isPreview
     ? [(await import('@cloudflare/vite-plugin')).cloudflare()]
@@ -11,7 +12,7 @@ export default defineConfig(async ({ command, isPreview }) => ({
     strictPort: true,
   },
   build: {
-    outDir: 'dist',
+    outDir: 'dist/mediakit',
     emptyOutDir: true,
   },
 }));

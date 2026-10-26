@@ -22,8 +22,8 @@ npm run dev
 
 This starts Vite with the Cloudflare Workers runtime. The frontend, API, and admin dashboard share one server:
 
-- `http://localhost:8787/` — media kit
-- `http://localhost:8787/mediakit/#platforms` — platform sections
+- `http://localhost:8787/mediakit/default` — media kit
+- `http://localhost:8787/mediakit/default#platforms` — platform sections
 - `http://localhost:8787/admindashboard` — admin dashboard
 
 Run only `npm run dev`. `npm run dev:worker` is an alias for the same command, so do not run both at once. Port 8787 must be free. Frontend edits update automatically, and Worker edits reload the local runtime. Development serves source files directly, so `npm run build` does not interrupt the running site.
@@ -32,12 +32,12 @@ Run only `npm run dev`. `npm run dev:worker` is an alias for the same command, s
 
 This project deploys as a Worker with static assets, rather than as a standalone Pages project. The Worker serves:
 
-- `/` — the default media kit
+- `/mediakit/default` — the default media kit
 - `/mediakit/:slug` — a saved presentation
 - `/api/mediakit/:slug` — its public JSON data
 - `/admindashboard` — the private editor
 
-The default media kit renders directly at `/` without a redirect. It uses bundled starter stats if its API data is unavailable.
+A presentation slug is required in every media-kit URL. `/`, `/mediakit`, and `/mediakit/` return 404.
 
 Create and deploy through the Cloudflare dashboard:
 

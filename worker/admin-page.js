@@ -1,4 +1,4 @@
-import { CONTENT_IMAGES } from './default-data.js';
+import { CONTENT_IMAGES, PLATFORM_METRICS } from './default-data.js';
 
 export function adminPage() {
   return `<!doctype html>
@@ -31,6 +31,7 @@ export function adminPage() {
   (() => {
     const $ = (selector, root = document) => root.querySelector(selector);
     const clone = (value) => JSON.parse(JSON.stringify(value));
+    const platformMetrics = ${JSON.stringify(PLATFORM_METRICS)};
     const availableImages = ${JSON.stringify(CONTENT_IMAGES)};
     let state = null;
     let selectedSlug = null;
@@ -61,10 +62,10 @@ export function adminPage() {
       }
     }
     /**
-     * Use the domain root for the default presentation.
+     * Build an explicit presentation URL for every media kit.
      */
     function presentationPath(slug) {
-      return slug === 'default' ? '/' : '/mediakit/' + slug;
+      return '/mediakit/' + slug;
     }
 
     function render() {
@@ -81,9 +82,9 @@ export function adminPage() {
       const settings = platformSettings(platform.id); const base = 'data.platforms.' + state.data.platforms.findIndex((item) => item.id === platform.id); const view = 'layout.platforms.' + platform.id;
       return '<section class="platform" data-platform="' + platform.id + '"><div class="platform-head"><div class="reorder"><button data-move="up" ' + (index === 0 ? 'disabled' : '') + ' title="Move up">↑</button><button data-move="down" ' + (index === current.platformOrder.length - 1 ? 'disabled' : '') + ' title="Move down">↓</button></div><h2>' + escapeAttr(platform.name) + '</h2>' + check('Show platform', settings.visible, view + '.visible') + '</div><div class="platform-body">' +
         '<div class="metric-field" style="margin-bottom:12px">' + check('Show handle', settings.handle, view + '.handle') + field('Handle', platform.handle, base + '.handle') + '</div>' +
-        '<div class="grid-3">' + metricInput('Followers', 'followers', platform, settings, base, view) + metricInput('Average views', 'avgViews', platform, settings, base, view) + metricInput('Engagement', 'engagement', platform, settings, base, view) + '</div>' +
+        '<div class="grid-3">' + platformMetrics[platform.id].map(([key, label]) => metricInput(label, key, platform, settings, base, view)).join('') + '</div>' +
+        '<div class="subsection"><div class="subsection-head"><h3>' + escapeAttr(platform.gendersLabel || 'Gender split') + '</h3>' + check('Show', settings.genders, view + '.genders') + '</div><div class="rows">' + platform.genders.map((item, i) => '<div class="data-row">' + check('', settings.genderItems[i] !== false, view + '.genderItems.' + i) + '<input type="text" aria-label="Audience" value="' + escapeAttr(item[0]) + '" data-path="' + base + '.genders.' + i + '.0"><input type="number" min="0" max="100" aria-label="Percentage" value="' + escapeAttr(item[1]) + '" data-path="' + base + '.genders.' + i + '.1"></div>').join('') + '</div></div>' +
         '<div class="subsection"><div class="subsection-head"><h3>Top locations</h3>' + check('Show', settings.locations, view + '.locations') + '</div><div class="rows">' + platform.locations.map((item, i) => '<div class="data-row">' + check('', settings.locationItems[i] !== false, view + '.locationItems.' + i) + '<input type="text" aria-label="Location" value="' + escapeAttr(item[0]) + '" data-path="' + base + '.locations.' + i + '.0"><input type="number" min="0" max="100" aria-label="Percentage" value="' + escapeAttr(item[1]) + '" data-path="' + base + '.locations.' + i + '.1"></div>').join('') + '</div></div>' +
-        '<div class="subsection"><div class="subsection-head"><h3>Gender split</h3>' + check('Show', settings.genders, view + '.genders') + '</div><div class="rows">' + platform.genders.map((item, i) => '<div class="data-row">' + check('', settings.genderItems[i] !== false, view + '.genderItems.' + i) + '<input type="text" aria-label="Audience" value="' + escapeAttr(item[0]) + '" data-path="' + base + '.genders.' + i + '.0"><input type="number" min="0" max="100" aria-label="Percentage" value="' + escapeAttr(item[1]) + '" data-path="' + base + '.genders.' + i + '.1"></div>').join('') + '</div></div>' +
         '<div class="subsection"><div class="subsection-head"><h3>Content performance</h3>' + check('Show section', settings.content, view + '.content') + '</div><div class="rows">' + platform.content.map((item, i) => '<div class="data-row content-row">' + check('', settings.contentItems[item.id] !== false, view + '.contentItems.' + item.id) + '<input type="text" aria-label="Title" value="' + escapeAttr(item.title) + '" data-path="' + base + '.content.' + i + '.title"><input type="text" aria-label="Format" value="' + escapeAttr(item.format) + '" data-path="' + base + '.content.' + i + '.format"><input type="text" aria-label="Views" value="' + escapeAttr(item.views) + '" data-path="' + base + '.content.' + i + '.views">' + imageSelect(item.image, base + '.content.' + i + '.image') + '</div>').join('') + '</div></div></div></section>';
     }
     function metricInput(label, key, platform, settings, base, view) { return '<div class="metric-field">' + check('Show ' + label.toLowerCase(), settings.metrics[key], view + '.metrics.' + key) + field(label, platform[key], base + '.' + key) + '</div>'; }
