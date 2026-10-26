@@ -39,7 +39,7 @@ test('public API returns default data and rejects unknown presentation slugs', a
   const runtime = env();
   const defaultResponse = await worker.fetch(new Request('https://example.com/api/mediakit/default'), runtime);
   assert.equal(defaultResponse.status, 200);
-  assert.equal((await defaultResponse.json()).platforms.length, 4);
+  assert.equal((await defaultResponse.json()).platforms.length, 5);
   const missingResponse = await worker.fetch(new Request('https://example.com/api/mediakit/missing'), runtime);
   assert.equal(missingResponse.status, 404);
 });
@@ -66,6 +66,54 @@ test('platform stats preserve the requested metrics and visibility through valid
   assert.equal(result.platforms[3].avgViewers90d, '1.2K');
   assert.equal(result.platforms[3].visible.metrics.avgViewers90d, false);
   assert.equal('engagement' in result.platforms[0], false);
+});
+
+test('X / Twitter stats and audience rows can be edited and hidden', () => {
+  const data = internals.validateData(structuredClone(DEFAULT_DATA));
+  const twitter = data.platforms.find(({ id }) => id === 'twitter');
+  assert.equal(twitter.name, 'X / Twitter');
+  assert.equal(twitter.followers, '43.5K');
+  assert.equal(twitter.impressions90d, '1.2M');
+  assert.equal(twitter.engagements90d, '61.2K');
+  assert.deepEqual(twitter.genders, [['Women', 58], ['Men', 42]]);
+  assert.deepEqual(twitter.locations, [['United States', 47.2], ['United Kingdom', 17], ['Australia', 5.2]]);
+
+  twitter.impressions90d = '1.3M';
+  const layout = defaultLayout();
+  layout.platforms.twitter.metrics.engagements90d = false;
+  layout.platforms.twitter.genderItems[1] = false;
+  layout.platforms.twitter.locationItems[2] = false;
+  const profile = applyLayout(internals.validateData(data), layout);
+  const result = profile.platforms.find(({ id }) => id === 'twitter');
+  assert.equal(result.impressions90d, '1.3M');
+  assert.equal(result.visible.metrics.engagements90d, false);
+  assert.deepEqual(result.genders, [['Women', 58]]);
+  assert.deepEqual(result.locations, [['United States', 47.2], ['United Kingdom', 17]]);
+
+  layout.platforms.twitter.visible = false;
+  assert.equal(applyLayout(data, layout).platforms.some(({ id }) => id === 'twitter'), false);
+});
+
+test('saved stats and layouts load X / Twitter without replacing existing edits', async () => {
+  const data = structuredClone(DEFAULT_DATA);
+  data.platforms = data.platforms.filter(({ id }) => id !== 'twitter');
+  data.platforms[0].followers = '40K';
+  data.overview.followers = '300K';
+  const layout = defaultLayout('pitch', 'Pitch');
+  layout.platformOrder = ['twitch', 'instagram', 'tiktok', 'youtube'];
+  delete layout.platforms.twitter;
+  const runtime = env({
+    'mediakit:data': JSON.stringify(data),
+    'mediakit:layout:pitch': JSON.stringify(layout),
+  });
+
+  const response = await worker.fetch(new Request('https://example.com/api/mediakit/pitch'), runtime);
+  assert.equal(response.status, 200);
+  const profile = await response.json();
+  assert.deepEqual(profile.platforms.map(({ id }) => id), ['twitch', 'instagram', 'tiktok', 'youtube', 'twitter']);
+  assert.equal(profile.platforms[1].followers, '40K');
+  assert.equal(profile.overview.followers, '300K');
+  assert.equal(profile.platforms[4].impressions90d, '1.2M');
 });
 
 test('bios save per presentation with independent visibility and empty defaults', async () => {
@@ -161,7 +209,7 @@ test('malformed cookies are treated as unauthorized instead of server errors', a
 
 test('validation normalises duplicated order and rejects unsafe image values', () => {
   const layout = internals.validateLayout({ ...defaultLayout(), platformOrder: ['twitch', 'twitch'] }, 'pitch');
-  assert.deepEqual(layout.platformOrder, ['twitch', 'instagram', 'tiktok', 'youtube']);
+  assert.deepEqual(layout.platformOrder, ['twitch', 'instagram', 'tiktok', 'youtube', 'twitter']);
   const data = structuredClone(DEFAULT_DATA);
   data.platforms[0].content[0].image = 'javascript:alert(1)';
   assert.throws(() => internals.validateData(data), /Image must be/);

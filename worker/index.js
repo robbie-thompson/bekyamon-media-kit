@@ -139,9 +139,22 @@ export function applyLayout(data, layout) {
   };
 }
 
+/**
+ * Load saved stats and seed X / Twitter for presentations saved before its addition.
+ */
 async function readData(env) {
   const stored = await env.MEDIA_KIT_KV.get(DATA_KEY, 'json');
-  return stored ? validateData(stored) : structuredClone(DEFAULT_DATA);
+
+  if (!stored) {
+    return structuredClone(DEFAULT_DATA);
+  }
+
+  // Preserve edited stats when adding the new platform to the saved data.
+  if (Array.isArray(stored.platforms) && !stored.platforms.some(({ id }) => id === 'twitter')) {
+    stored.platforms.push(structuredClone(DEFAULT_DATA.platforms.find(({ id }) => id === 'twitter')));
+  }
+
+  return validateData(stored);
 }
 
 async function readLayouts(env) {

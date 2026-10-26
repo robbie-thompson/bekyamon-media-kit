@@ -1,4 +1,4 @@
-import { createIcons, Mail, ArrowUpRight, MapPin, Users, Instagram, Youtube, Twitch, Music2 } from 'lucide';
+import { createIcons, Mail, ArrowUpRight, MapPin, Users, Instagram, Youtube, Twitch, Twitter, Music2 } from 'lucide';
 import './styles.css';
 import { PLATFORM_METRICS } from '../worker/default-data.js';
 const imageUrl = (filename) => `${import.meta.env.BASE_URL}images/${filename}`;
@@ -175,5 +175,5 @@ loadMediaKit().then((profile) => {
     : profile
       ? dashboard(profile)
       : unavailable('Presentation not found', 'This media-kit link isn’t available.', 'Please check the URL or ask for an updated link.');
-  createIcons({ icons: { Mail, ArrowUpRight, MapPin, Users, Instagram, Youtube, Twitch, Music2 } });
+  createIcons({ icons: { Mail, ArrowUpRight, MapPin, Users, Instagram, Youtube, Twitch, Twitter, Music2 } });
 });

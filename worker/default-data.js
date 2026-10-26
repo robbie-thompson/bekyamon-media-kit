@@ -1,4 +1,4 @@
-export const PLATFORM_IDS = ['instagram', 'tiktok', 'youtube', 'twitch'];
+export const PLATFORM_IDS = ['instagram', 'tiktok', 'youtube', 'twitch', 'twitter'];
 
 // Share platform metric definitions between the editor, validation, and public page.
 export const PLATFORM_METRICS = {
@@ -20,6 +20,11 @@ export const PLATFORM_METRICS = {
     ['followers', 'Followers'],
     ['totalViews90d', '90d total views'],
     ['avgViewers90d', '90d avg. viewers'],
+  ],
+  twitter: [
+    ['followers', 'Followers'],
+    ['impressions90d', '90d impressions'],
+    ['engagements90d', '90d engagements'],
   ],
 };
 
@@ -44,11 +49,11 @@ export const CONTENT_IMAGES = [
 export const DEFAULT_DATA = {
   updatedLabel: 'October 2026',
   overview: {
-    followers: '281.6K',
-    // Sum 90-day views across all platforms, shown to two decimal places in millions.
+    followers: '325.1K',
+    // Sum 90-day views across video platforms, shown to two decimal places in millions.
     views90d: '2.35M',
-    // Combine Instagram interactions and TikTok likes.
-    engagement90d: '78.6K',
+    // Combine Instagram interactions, TikTok likes, and X / Twitter engagements.
+    engagement90d: '139.8K',
   },
   platforms: [
     {
@@ -189,6 +194,18 @@ export const DEFAULT_DATA = {
           image: 'content/twitch-3.jpg',
         },
       ],
+    },
+    {
+      id: 'twitter',
+      name: 'X / Twitter',
+      handle: '@bekyamon',
+      icon: 'twitter',
+      followers: '43.5K',
+      impressions90d: '1.2M',
+      engagements90d: '61.2K',
+      locations: [['United States', 47.2], ['United Kingdom', 17], ['Australia', 5.2]],
+      genders: [['Women', 58], ['Men', 42]],
+      content: [],
     },
   ],
 };
