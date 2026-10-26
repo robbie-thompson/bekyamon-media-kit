@@ -93,7 +93,7 @@ function dashboardPlatform(platform, index) {
         <a class="dashboard-platform__title" href="${escapeHtml(platformUrl(platform))}" target="_blank" rel="noreferrer"><span>${socialIcon(platform.id, 26)}</span><div><p class="eyebrow">0${index + 1}${platform.visible.handle ? ` - ${escapeHtml(platform.handle)}` : ''}</p><h2>${escapeHtml(platform.name)}${icon('arrow-up-right', 16)}</h2></div></a>
       </div>
       <div class="dashboard-grid" style="--metric-span: ${6 / (metrics.length || 1)}">
-        ${metrics.map(([key, label], metricIndex) => `<div class="metric-card ${metricIndex === 0 ? 'metric-card--primary' : ''}"><p>${label}</p><strong>${escapeHtml(platform[key] || '—')}</strong></div>`).join('')}
+        ${metrics.map(([key, label], metricIndex) => `<div class="metric-card ${metricIndex === 0 ? 'metric-card--primary' : ''}"><p>${label}</p><strong>${escapeHtml(platform[key] || '-')}</strong></div>`).join('')}
         ${platform.visible.genders && platform.genders.length ? `<div class="dashboard-audience">
           <div class="dashboard-card-heading"><div><p class="eyebrow">Community</p><h3>${escapeHtml(platform.gendersLabel || 'Gender split')}</h3></div>${icon('users')}</div>
           ${progressList(platform.genders)}

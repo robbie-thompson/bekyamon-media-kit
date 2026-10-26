@@ -184,7 +184,7 @@ function validateData(input) {
     handle: cleanText(platform.handle, 80),
     icon: DEFAULT_DATA.platforms.find((item) => item.id === platform.id).icon,
     ...Object.fromEntries(PLATFORM_METRICS[platform.id].map(([key]) => [
-      key, cleanText(platform[key] ?? '—', 30),
+      key, cleanText(platform[key] ?? '-', 30),
     ])),
     locations: validateBreakdown(platform.locations),
     gendersLabel: cleanText(platform.gendersLabel || 'Gender split', 80),

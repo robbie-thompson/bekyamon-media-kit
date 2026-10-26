@@ -131,7 +131,7 @@ export function adminPage() {
       state.layouts.push(template);
       selectedSlug = slug;
       render();
-      notify('Media kit created — save to publish it');
+      notify('Media kit created - save to publish it');
     }
 
     $('#layout-list').addEventListener('click', (event) => {
