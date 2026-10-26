@@ -13,14 +13,19 @@ For example, an admin can create `twitch`, move Twitch to the top, hide Instagra
 
 The biography, contact details, creator imagery, and collaboration strip remain static in the frontend.
 
-## Local frontend development
+## Local development
 
 ```bash
 npm install
 npm run dev
 ```
 
-Vite runs the static frontend and uses bundled starter stats when the Worker API is unavailable.
+This builds the frontend and starts Wrangler. The frontend, API, and admin dashboard share one server:
+
+- `http://localhost:8787/` — media kit
+- `http://localhost:8787/admindashboard` — admin dashboard
+
+Run only `npm run dev`. `npm run dev:worker` is an alias for the same command, so do not run both at once. Use the port printed by Wrangler if it differs. Restart the command after frontend edits to rebuild the static assets.
 
 ## Cloudflare setup
 
@@ -54,10 +59,9 @@ Copy the example secret file and choose a local password:
 
 ```bash
 cp .dev.vars.example .dev.vars
-npm run dev:worker
 ```
 
-Wrangler provides a local KV store. Open the URL printed by Wrangler, then visit `/admindashboard`.
+Skip the copy if `.dev.vars` already exists. Set `DASHBOARD_PASSWORD` in `.dev.vars`, then run `npm run dev`. Wrangler provides a local KV store. Open `http://localhost:8787/admindashboard` and log in with that password.
 
 ## Data and security notes
 

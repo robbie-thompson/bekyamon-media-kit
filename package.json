@@ -4,8 +4,8 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "dev:worker": "npm run build && wrangler dev",
+    "dev": "npm run build && wrangler dev",
+    "dev:worker": "npm run dev",
     "build": "rm -rf dist && vite build && cp cloudflare/_headers cloudflare/404.html dist/",
     "preview": "vite preview",
     "test": "node --test",
