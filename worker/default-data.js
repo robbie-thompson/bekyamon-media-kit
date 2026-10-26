@@ -1,5 +1,28 @@
 export const PLATFORM_IDS = ['instagram', 'tiktok', 'youtube', 'twitch'];
 
+// Share platform metric definitions between the editor, validation, and public page.
+export const PLATFORM_METRICS = {
+  instagram: [
+    ['followers', 'Followers'],
+    ['views90d', '90d views'],
+    ['interactions90d', '90d interactions'],
+  ],
+  tiktok: [
+    ['followers', 'Followers'],
+    ['views90d', '90d views'],
+    ['likes90d', '90d likes'],
+  ],
+  youtube: [
+    ['followers', 'Subscribers'],
+    ['views90d', '90d views'],
+  ],
+  twitch: [
+    ['followers', 'Followers'],
+    ['totalViews90d', '90d total views'],
+    ['avgViewers90d', '90d avg. viewers'],
+  ],
+};
+
 export const CONTENT_IMAGES = [
   { value: 'bekyamon-close.jpg', label: 'Close portrait' },
   { value: 'bekyamon-profile.jpg', label: 'Profile portrait' },
@@ -7,11 +30,11 @@ export const CONTENT_IMAGES = [
 ];
 
 export const DEFAULT_DATA = {
-  updatedLabel: 'July 2026',
+  updatedLabel: 'October 2026',
   overview: {
-    followers: '1.55M',
-    avgViews: '1.08M',
-    engagement: '8.3%',
+    followers: '281.6K',
+    avgViews: '—',
+    engagement: '—',
   },
   platforms: [
     {
@@ -19,11 +42,11 @@ export const DEFAULT_DATA = {
       name: 'Instagram',
       handle: '@bekyamon',
       icon: 'instagram',
-      followers: '484K',
-      avgViews: '318K',
-      engagement: '7.8%',
-      locations: [['United Kingdom', 48], ['United States', 22], ['Australia', 8]],
-      genders: [['Women', 72], ['Men', 24], ['Other', 4]],
+      followers: '32.2K',
+      views90d: '997K',
+      interactions90d: '75K',
+      locations: [['United States', 30], ['United Kingdom', 25], ['Australia', 5]],
+      genders: [['Women', 67], ['Men', 33]],
       content: [
         { id: 'instagram-1', title: 'A slow afternoon by the sea', format: 'Reel', views: '842K', image: 'bekyamon-close.jpg' },
         { id: 'instagram-2', title: 'Three ways I style summer', format: 'Carousel', views: '316K', image: 'bekyamon-profile.jpg' },
@@ -35,11 +58,11 @@ export const DEFAULT_DATA = {
       name: 'TikTok',
       handle: '@bekyamon',
       icon: 'music-2',
-      followers: '728K',
-      avgViews: '526K',
-      engagement: '10.4%',
-      locations: [['United Kingdom', 52], ['United States', 19], ['Ireland', 7]],
-      genders: [['Women', 76], ['Men', 20], ['Other', 4]],
+      followers: '69K',
+      views90d: '35.5K',
+      likes90d: '3.6K',
+      locations: [['United Kingdom', 40], ['United States', 15], ['Australia', 4]],
+      genders: [['Women', 66], ['Men', 30], ['Other', 4]],
       content: [
         { id: 'tiktok-1', title: 'POV: the outfit finally works', format: 'Video', views: '1.8M', image: 'bekyamon-profile.jpg' },
         { id: 'tiktok-2', title: 'Beach day reality check', format: 'Video', views: '934K', image: 'bekyamon-wide.jpg' },
@@ -51,11 +74,11 @@ export const DEFAULT_DATA = {
       name: 'YouTube',
       handle: 'Bekyamon',
       icon: 'youtube',
-      followers: '211K',
-      avgViews: '148K',
-      engagement: '6.2%',
-      locations: [['United Kingdom', 44], ['United States', 27], ['Canada', 9]],
-      genders: [['Women', 69], ['Men', 26], ['Other', 5]],
+      // Sum channel counts and take a simple mean of their audience percentages.
+      followers: '41.4K',
+      views90d: '989K',
+      locations: [['United States', 36.5], ['United Kingdom', 25.5], ['South Africa', 10.5]],
+      genders: [['Women', 48.5], ['Men', 49.5], ['Other', 2]],
       content: [
         { id: 'youtube-1', title: 'A very honest summer reset', format: 'Vlog · 18:42', views: '284K', image: 'bekyamon-wide.jpg' },
         { id: 'youtube-2', title: 'Things I wish I knew sooner', format: 'Video · 14:08', views: '197K', image: 'bekyamon-close.jpg' },
@@ -67,11 +90,13 @@ export const DEFAULT_DATA = {
       name: 'Twitch',
       handle: 'bekyamon',
       icon: 'twitch',
-      followers: '126K',
-      avgViews: '92K',
-      engagement: '9.1%',
-      locations: [['United Kingdom', 46], ['United States', 25], ['Canada', 8]],
-      genders: [['Women', 67], ['Men', 28], ['Other', 5]],
+      followers: '139K',
+      totalViews90d: '333K',
+      avgViewers90d: '301',
+      locations: [['United Kingdom', 30], ['United States', 28], ['Canada', 4]],
+      gendersLabel: 'Gender split (18–24)',
+      // Normalize the 18–24 entries by their total of 52.17% of the full audience.
+      genders: [['Women', 51.5], ['Men', 9.6], ['Unknown', 38.9]],
       content: [
         { id: 'twitch-1', title: 'Cosy games and a proper catch-up', format: 'Stream · 03:18:42', views: '156K', image: 'bekyamon-close.jpg' },
         { id: 'twitch-2', title: 'Chat chooses everything I do', format: 'Stream · 02:46:19', views: '121K', image: 'bekyamon-profile.jpg' },
@@ -91,7 +116,7 @@ export function defaultLayout(slug = 'default', name = 'Default') {
     platforms: Object.fromEntries(PLATFORM_IDS.map((id) => [id, {
       visible: true,
       handle: true,
-      metrics: { followers: true, avgViews: true, engagement: true },
+      metrics: Object.fromEntries(PLATFORM_METRICS[id].map(([key]) => [key, true])),
       locations: true,
       locationItems: {},
       genders: true,
