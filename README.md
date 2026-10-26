@@ -72,6 +72,19 @@ Skip the copy if `.dev.vars` already exists. Set `DASHBOARD_PASSWORD` in `.dev.v
 - `DASHBOARD_PASSWORD` must be stored as an encrypted runtime secret under the Worker's **Variables and Secrets** settings; do not add it to `wrangler.jsonc` or commit `.dev.vars`.
 - Content images are selected from the bundled media-kit images in the dashboard.
 
+## Default content sources
+
+Content was checked in the internal browser on 26 October 2026. Each platform uses its three latest public uploads in newest-first order. YouTube uses the `@bekyamonlive` VOD channel, whose latest videos are newer than its Shorts. Twitch uses past broadcasts sorted by date. View counts are a snapshot of the public display, including platform rounding. Instagram does not expose views on these public reel pages, so its entries show `Not public` rather than likes or estimated views.
+
+| Platform | Latest | Second latest | Third latest |
+| --- | --- | --- | --- |
+| Instagram | [Moving update](https://www.instagram.com/bekyamon/reel/DeCbCpWK_Hr/) | [Dungeons II loadout](https://www.instagram.com/bekyamon/reel/Dd9NgPsKkys/) | [New in Dungeons II](https://www.instagram.com/bekyamon/reel/Dd6rl14qQRB/) |
+| TikTok | [Dungeons II loadout](https://www.tiktok.com/@bekyamon/video/7691718088949058838) | [New in Dungeons II](https://www.tiktok.com/@bekyamon/video/7691353785083448598) | [LEGO Chicken Mounts](https://www.tiktok.com/@bekyamon/video/7667993399651306785) |
+| YouTube | [The Last Stand](https://www.youtube.com/watch?v=7pwrtqbMdms) | [Festivale SMP day 4](https://www.youtube.com/watch?v=yPeTSp1h_K8) | [Bombanana with the besties](https://www.youtube.com/watch?v=EAiUKN5JKCY) |
+| Twitch | [Building my desk in the USA](https://www.twitch.tv/videos/2910552123) | [Last stream in the UK](https://www.twitch.tv/videos/2895202932) | [Festivaling with friends](https://www.twitch.tv/videos/2893473908) |
+
+Thumbnails are saved in `public/images/content/` so the default content does not depend on expiring social CDN URLs. Twitch thumbnails two and three use frames around 20:24, captured from their respective VODs. Captions are shortened into titles, with paid content marked as ads where disclosed. These defaults apply before shared data is saved to KV. Existing saved data must be edited through the dashboard.
+
 ## Verification
 
 ```bash

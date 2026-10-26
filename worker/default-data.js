@@ -27,6 +27,18 @@ export const CONTENT_IMAGES = [
   { value: 'bekyamon-close.jpg', label: 'Close portrait' },
   { value: 'bekyamon-profile.jpg', label: 'Profile portrait' },
   { value: 'bekyamon-wide.jpg', label: 'Wide portrait' },
+  { value: 'content/instagram-1.jpg', label: 'Instagram · Moving update' },
+  { value: 'content/instagram-2.jpg', label: 'Instagram · Minecraft Dungeons II loadout' },
+  { value: 'content/instagram-3.jpg', label: 'Instagram · New in Minecraft Dungeons II' },
+  { value: 'content/tiktok-1.avif', label: 'TikTok · Minecraft Dungeons II loadout' },
+  { value: 'content/tiktok-2.avif', label: 'TikTok · New in Minecraft Dungeons II' },
+  { value: 'content/tiktok-3.avif', label: 'TikTok · LEGO Minecraft Chicken Mounts' },
+  { value: 'content/youtube-1.jpg', label: 'YouTube · The Last Stand' },
+  { value: 'content/youtube-2.jpg', label: 'YouTube · Festivale SMP day 4' },
+  { value: 'content/youtube-3.jpg', label: 'YouTube · Bombanana with the besties' },
+  { value: 'content/twitch-1.jpg', label: 'Twitch · Building my desk in the USA' },
+  { value: 'content/twitch-2.jpg', label: 'Twitch · Last stream in the UK' },
+  { value: 'content/twitch-3.jpg', label: 'Twitch · Festivaling with friends' },
 ];
 
 export const DEFAULT_DATA = {
@@ -50,9 +62,28 @@ export const DEFAULT_DATA = {
       locations: [['United States', 30], ['United Kingdom', 25], ['Australia', 5]],
       genders: [['Women', 67], ['Men', 33]],
       content: [
-        { id: 'instagram-1', title: 'A slow afternoon by the sea', format: 'Reel', views: '842K', image: 'bekyamon-close.jpg' },
-        { id: 'instagram-2', title: 'Three ways I style summer', format: 'Carousel', views: '316K', image: 'bekyamon-profile.jpg' },
-        { id: 'instagram-3', title: 'What I actually packed', format: 'Reel', views: '691K', image: 'bekyamon-wide.jpg' },
+        // Public reel pages expose likes, but do not expose view counts.
+        {
+          id: 'instagram-1',
+          title: 'an update on my big move!!! more to come soon :)',
+          format: 'Reel · 3 Oct 2026',
+          views: 'Not public',
+          image: 'content/instagram-1.jpg',
+        },
+        {
+          id: 'instagram-2',
+          title: 'mix and match your perfect loadout in Minecraft Dungeons II, out NOW!',
+          format: 'Reel · Ad · 1 Oct 2026',
+          views: 'Not public',
+          image: 'content/instagram-2.jpg',
+        },
+        {
+          id: 'instagram-3',
+          title: "find out everything that's NEW in Minecraft Dungeons II, out NOW!!",
+          format: 'Reel · Ad · 30 Sep 2026',
+          views: 'Not public',
+          image: 'content/instagram-3.jpg',
+        },
       ],
     },
     {
@@ -66,15 +97,33 @@ export const DEFAULT_DATA = {
       locations: [['United Kingdom', 40], ['United States', 15], ['Australia', 4]],
       genders: [['Women', 66], ['Men', 30], ['Other', 4]],
       content: [
-        { id: 'tiktok-1', title: 'POV: the outfit finally works', format: 'Video', views: '1.8M', image: 'bekyamon-profile.jpg' },
-        { id: 'tiktok-2', title: 'Beach day reality check', format: 'Video', views: '934K', image: 'bekyamon-wide.jpg' },
-        { id: 'tiktok-3', title: 'This changed my morning', format: 'Video', views: '712K', image: 'bekyamon-close.jpg' },
+        {
+          id: 'tiktok-1',
+          title: 'mix and match your perfect loadout in Minecraft Dungeons II, out NOW!',
+          format: 'Video · Ad',
+          views: '2,540',
+          image: 'content/tiktok-1.avif',
+        },
+        {
+          id: 'tiktok-2',
+          title: "find out everything that's NEW in Minecraft Dungeons II, out NOW!!",
+          format: 'Video · Ad',
+          views: '938',
+          image: 'content/tiktok-2.avif',
+        },
+        {
+          id: 'tiktok-3',
+          title: 'Check out the LEGO Minecraft Chicken Mounts add-on on the Bedrock marketplace!',
+          format: 'Video · Ad',
+          views: '2,670',
+          image: 'content/tiktok-3.avif',
+        },
       ],
     },
     {
       id: 'youtube',
       name: 'YouTube',
-      handle: 'Bekyamon',
+      handle: '@bekyamonlive',
       icon: 'youtube',
       // Sum channel counts and take a simple mean of their audience percentages.
       followers: '41.4K',
@@ -82,9 +131,27 @@ export const DEFAULT_DATA = {
       locations: [['United States', 36.5], ['United Kingdom', 25.5], ['South Africa', 10.5]],
       genders: [['Women', 48.5], ['Men', 49.5], ['Other', 2]],
       content: [
-        { id: 'youtube-1', title: 'A very honest summer reset', format: 'Vlog · 18:42', views: '284K', image: 'bekyamon-wide.jpg' },
-        { id: 'youtube-2', title: 'Things I wish I knew sooner', format: 'Video · 14:08', views: '197K', image: 'bekyamon-close.jpg' },
-        { id: 'youtube-3', title: 'Come away with me for 48 hours', format: 'Vlog · 22:16', views: '163K', image: 'bekyamon-profile.jpg' },
+        {
+          id: 'youtube-1',
+          title: 'THE LAST STAND - MINECRAFT EVENT',
+          format: 'VOD · 04:36:01',
+          views: '2.8K',
+          image: 'content/youtube-1.jpg',
+        },
+        {
+          id: 'youtube-2',
+          title: 'FESTIVALE SMP DAY 4 (KIND OF)',
+          format: 'VOD · 03:30:25',
+          views: '2.5K',
+          image: 'content/youtube-2.jpg',
+        },
+        {
+          id: 'youtube-3',
+          title: 'BOMBANANA WITH THE BESTIES!!!',
+          format: 'VOD · 01:54:48',
+          views: '6.4K',
+          image: 'content/youtube-3.jpg',
+        },
       ],
     },
     {
@@ -100,9 +167,27 @@ export const DEFAULT_DATA = {
       // Normalize the 18–24 entries by their total of 52.17% of the full audience.
       genders: [['Women', 51.5], ['Men', 9.6], ['Unknown', 38.9]],
       content: [
-        { id: 'twitch-1', title: 'Cosy games and a proper catch-up', format: 'Stream · 03:18:42', views: '156K', image: 'bekyamon-close.jpg' },
-        { id: 'twitch-2', title: 'Chat chooses everything I do', format: 'Stream · 02:46:19', views: '121K', image: 'bekyamon-profile.jpg' },
-        { id: 'twitch-3', title: 'Late-night community games', format: 'Stream · 04:02:07', views: '98K', image: 'bekyamon-wide.jpg' },
+        {
+          id: 'twitch-1',
+          title: 'I MADE IT TO THE USA!!!! BUILD MY DESK WITH ME',
+          format: 'Stream · 01:50:00',
+          views: '5.1K',
+          image: 'content/twitch-1.jpg',
+        },
+        {
+          id: 'twitch-2',
+          title: 'MY LAST STREAM IN THE UK!!!',
+          format: 'Stream · 01:46:30',
+          views: '4.5K',
+          image: 'content/twitch-2.jpg',
+        },
+        {
+          id: 'twitch-3',
+          title: 'FESTIVALING WITH MY FRIENDS PERHAPS',
+          format: 'Stream · 02:16:38',
+          views: '3.4K',
+          image: 'content/twitch-3.jpg',
+        },
       ],
     },
   ],
