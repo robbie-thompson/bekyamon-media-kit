@@ -1,4 +1,4 @@
-import { createIcons, Mail, ArrowUpRight, MapPin, Users, Instagram, Youtube, Twitch, Twitter, Music2 } from 'lucide';
+import { createIcons, Mail, ArrowUpRight, MapPin, Users, Instagram } from 'lucide';
 import './styles.css';
 import { PLATFORM_METRICS } from '../worker/default-data.js';
 const imageUrl = (filename) => `${import.meta.env.BASE_URL}images/${filename}`;
@@ -14,6 +14,13 @@ const brands = [
 
 function icon(name, size = 16) {
   return `<i data-lucide="${name}" width="${size}" height="${size}" aria-hidden="true"></i>`;
+}
+
+/**
+ * Render a local colour logo for a social platform.
+ */
+function socialIcon(platform, size = 16) {
+  return `<img class="social-icon" src="${imageUrl(`social/${platform}.svg`)}" width="${size}" height="${size}" style="--icon-size: ${size}px" alt="" aria-hidden="true" />`;
 }
 
 function escapeHtml(value) {
@@ -51,7 +58,7 @@ function progressList(items) {
 }
 
 function platformNav(platformData) {
-  return `<nav class="platform-nav" aria-label="Platform sections">${platformData.map((platform) => `<a href="#${platform.id}">${icon(platform.icon)}${escapeHtml(platform.name)}</a>`).join('')}</nav>`;
+  return `<nav class="platform-nav" aria-label="Platform sections">${platformData.map((platform) => `<a href="#${platform.id}">${socialIcon(platform.id)}${escapeHtml(platform.name)}</a>`).join('')}</nav>`;
 }
 
 function footer() {
@@ -83,7 +90,7 @@ function dashboardPlatform(platform, index) {
   return `
     <section class="dashboard-platform platform-section" id="${platform.id}">
       <div class="dashboard-platform__header">
-        <a class="dashboard-platform__title" href="${escapeHtml(platformUrl(platform))}" target="_blank" rel="noreferrer"><span>${icon(platform.icon, 22)}</span><div><p class="eyebrow">0${index + 1}${platform.visible.handle ? ` - ${escapeHtml(platform.handle)}` : ''}</p><h2>${escapeHtml(platform.name)}</h2></div></a>
+        <a class="dashboard-platform__title" href="${escapeHtml(platformUrl(platform))}" target="_blank" rel="noreferrer"><span>${socialIcon(platform.id, 26)}</span><div><p class="eyebrow">0${index + 1}${platform.visible.handle ? ` - ${escapeHtml(platform.handle)}` : ''}</p><h2>${escapeHtml(platform.name)}${icon('arrow-up-right', 16)}</h2></div></a>
       </div>
       <div class="dashboard-grid" style="--metric-span: ${6 / (metrics.length || 1)}">
         ${metrics.map(([key, label], metricIndex) => `<div class="metric-card ${metricIndex === 0 ? 'metric-card--primary' : ''}"><p>${label}</p><strong>${escapeHtml(platform[key] || '—')}</strong></div>`).join('')}
@@ -191,5 +198,5 @@ loadMediaKit().then((profile) => {
     : profile
       ? dashboard(profile)
       : unavailable('Media kit not found', 'This media-kit link isn’t available.', 'Please check the URL or ask for an updated link.');
-  createIcons({ icons: { Mail, ArrowUpRight, MapPin, Users, Instagram, Youtube, Twitch, Twitter, Music2 } });
+  createIcons({ icons: { Mail, ArrowUpRight, MapPin, Users, Instagram } });
 });

@@ -43,14 +43,15 @@ h1, h2, h3, h4, p { margin: 0; }
 .brand-row { display: grid; grid-template-columns: repeat(6, 1fr); }
 .brand-mark { --logo-height: 30px; min-height: 64px; padding: 15px clamp(12px, 2vw, 30px); border-left: 1px solid var(--line); display: grid; place-items: center; }
 .brand-mark:first-child { border-left: 0; }
-.brand-mark img { width: auto; height: var(--logo-height); max-width: min(112px, 100%); object-fit: contain; opacity: .57; }
-.brand-mark--mojang { --logo-height: 17px; }
+.brand-mark img { width: auto; height: var(--logo-height); max-width: min(112px, 100%); object-fit: contain; }
+.brand-mark--mojang { --logo-height: 24px; }
 .brand-mark--doritos { --logo-height: 56px; }
-.brand-mark--doritos img { filter: grayscale(1); mix-blend-mode: multiply; }
-.brand-mark--uber-eats { --logo-height: 38px; }
+.brand-mark--uber-eats { --logo-height: 20px; }
 .brand-mark--xbox { --logo-height: 32px; }
 .brand-mark--nintendo { --logo-height: 24px; }
 .brand-mark--logi { --logo-height: 28px; }
+
+.social-icon { width: var(--icon-size); height: var(--icon-size); flex-shrink: 0; object-fit: contain; }
 
 .platform-nav { display: flex; flex-direction: column; gap: 8px; }
 .platform-nav a { padding: 12px; border-radius: 5px; text-decoration: none; font-size: var(--font-small); display: flex; gap: 8px; align-items: center; }
@@ -93,8 +94,8 @@ h1, h2, h3, h4, p { margin: 0; }
 .dashboard-platform__title { display: flex; align-items: center; gap: 17px; text-decoration: none; border-radius: 6px; }
 .dashboard-platform__title:hover h2 { text-decoration: underline; text-underline-offset: 5px; }
 .dashboard-platform__title:focus-visible { outline: 2px solid var(--ink); outline-offset: 6px; }
-.dashboard-platform__title > span { width: 48px; height: 48px; border-radius: 6px; background: var(--ink); color: var(--paper); display: grid; place-items: center; }
-.dashboard-platform h2 { font: 600 32px/1 var(--display); letter-spacing: -.045em; margin-top: 8px; }
+.dashboard-platform__title > span { width: 48px; height: 48px; border-radius: 6px; background: #f1f1ed; display: grid; place-items: center; }
+.dashboard-platform h2 { display: flex; align-items: center; gap: 8px; font: 600 32px/1 var(--display); letter-spacing: -.045em; margin-top: 8px; }
 .dashboard-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
 .metric-card, .dashboard-audience, .dashboard-content { background: #f1f1ed; border: 1px solid rgba(31,33,31,.08); border-radius: 6px; }
 .metric-card { grid-column: span var(--metric-span, 2); min-height: 190px; padding: 24px; display: flex; flex-direction: column; }
