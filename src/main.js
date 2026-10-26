@@ -128,14 +128,14 @@ function dashboard(profile) {
     <div class="site" id="top">
       <main id="content" class="dashboard-shell">
         <aside class="dashboard-sidebar">
-          <div><p class="eyebrow">Media kit / ${new Date().getFullYear()}</p><h2>Bekyamon</h2></div>
+          <div><p class="eyebrow">Media kit / ${new Date().getFullYear()}</p><h2>bekyamon</h2></div>
           ${platformNav(platformData)}
           <div class="sidebar-contact"><p>Partnership enquiries</p><a href="mailto:business@bekyamon.live">business@bekyamon.live</a></div>
         </aside>
         <div class="dashboard-main">
           <section class="dashboard-hero${showBio ? '' : ' dashboard-hero--no-bio'}">
             <div class="dashboard-profile">
-              <img src="${imageUrl('bekyamon-close.jpg')}" alt="Portrait of Bekyamon on the beach" />
+              <img src="${imageUrl('bekyamon-close.jpg')}" alt="Portrait of bekyamon on the beach" />
               <div><h1>hi, i'm<br>bekyamon</h1></div>
             </div>
             ${showBio ? `<p class="dashboard-bio">${escapeHtml(profile.bio.text)}</p>` : ''}
