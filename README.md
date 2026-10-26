@@ -20,12 +20,13 @@ npm install
 npm run dev
 ```
 
-This builds the frontend and starts Wrangler. The frontend, API, and admin dashboard share one server:
+This starts Vite with the Cloudflare Workers runtime. The frontend, API, and admin dashboard share one server:
 
 - `http://localhost:8787/` — media kit
+- `http://localhost:8787/mediakit/#platforms` — platform sections
 - `http://localhost:8787/admindashboard` — admin dashboard
 
-Run only `npm run dev`. `npm run dev:worker` is an alias for the same command, so do not run both at once. Use the port printed by Wrangler if it differs. Restart the command after frontend edits to rebuild the static assets.
+Run only `npm run dev`. `npm run dev:worker` is an alias for the same command, so do not run both at once. Port 8787 must be free. Frontend edits update automatically, and Worker edits reload the local runtime. Development serves source files directly, so `npm run build` does not interrupt the running site.
 
 ## Cloudflare setup
 

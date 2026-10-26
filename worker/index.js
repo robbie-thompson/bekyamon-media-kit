@@ -21,7 +21,10 @@ export default {
         return new Response(adminPage(), { headers: securityHeaders('text/html; charset=utf-8') });
       }
       if (url.pathname === '/') return env.ASSETS.fetch(request);
-      if ((request.method === 'GET' || request.method === 'HEAD') && /^\/mediakit\/[a-z0-9-]+\/?$/.test(url.pathname)) {
+      const isMediaKitPage = /^\/mediakit(?:\/[a-z0-9-]+)?\/?$/.test(url.pathname);
+
+      // Serve the app entry point for default and saved presentation URLs.
+      if ((request.method === 'GET' || request.method === 'HEAD') && isMediaKitPage) {
         const indexUrl = new URL('/', url);
         return env.ASSETS.fetch(new Request(indexUrl, request));
       }

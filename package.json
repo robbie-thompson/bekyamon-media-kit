@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "npm run build && wrangler dev",
+    "dev": "vite",
     "dev:worker": "npm run dev",
     "build": "rm -rf dist && vite build && cp cloudflare/_headers cloudflare/404.html dist/",
     "preview": "vite preview",
@@ -16,7 +16,8 @@
     "lucide": "^0.468.0"
   },
   "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.65.0",
     "vite": "^6.0.7",
-    "wrangler": "^4.0.0"
+    "wrangler": "^4.152.0"
   }
 }
