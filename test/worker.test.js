@@ -68,6 +68,47 @@ test('platform stats preserve the requested metrics and visibility through valid
   assert.equal('engagement' in result.platforms[0], false);
 });
 
+test('bios save per presentation with independent visibility and empty defaults', async () => {
+  const runtime = env();
+  const login = await worker.fetch(new Request('https://example.com/api/admin/login', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ password: 'test-password' }),
+  }), runtime);
+  const cookie = login.headers.get('set-cookie').split(';')[0];
+  const pitch = defaultLayout('pitch', 'Pitch');
+  pitch.bio = 'Gaming creator\nLet’s collaborate <together>.';
+  pitch.bioVisible = true;
+
+  for (const visible of [true, false]) {
+    pitch.bioVisible = visible;
+    const save = await worker.fetch(new Request('https://example.com/api/admin/layout/pitch', {
+      method: 'PUT',
+      headers: { cookie, 'content-type': 'application/json' },
+      body: JSON.stringify(pitch),
+    }), runtime);
+    assert.equal(save.status, 200);
+
+    const response = await worker.fetch(new Request('https://example.com/api/mediakit/pitch'), runtime);
+    assert.deepEqual((await response.json()).bio, { text: pitch.bio, visible });
+  }
+
+  const state = await worker.fetch(new Request('https://example.com/api/admin/state', {
+    headers: { cookie },
+  }), runtime);
+  const savedPitch = (await state.json()).layouts.find(({ slug }) => slug === 'pitch');
+  assert.equal(savedPitch.bio, pitch.bio);
+  assert.equal(savedPitch.bioVisible, false);
+
+  const response = await worker.fetch(new Request('https://example.com/api/mediakit/default'), runtime);
+  assert.deepEqual((await response.json()).bio, { text: '', visible: false });
+  const existingLayout = defaultLayout();
+  delete existingLayout.bio;
+  delete existingLayout.bioVisible;
+  const profile = applyLayout(DEFAULT_DATA, internals.validateLayout(existingLayout, 'default'));
+  assert.deepEqual(profile.bio, { text: '', visible: false });
+});
+
 test('password login issues a session that can read and update admin state', async () => {
   const runtime = env();
   const login = await worker.fetch(new Request('https://example.com/api/admin/login', {

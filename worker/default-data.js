@@ -197,6 +197,8 @@ export function defaultLayout(slug = 'default', name = 'Default') {
   return {
     slug,
     name,
+    bio: '',
+    bioVisible: false,
     overviewVisible: true,
     overviewMetrics: { followers: true, views90d: true, engagement90d: true },
     platformOrder: [...PLATFORM_IDS],

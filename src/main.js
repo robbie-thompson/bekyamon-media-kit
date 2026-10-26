@@ -107,6 +107,7 @@ function overview(profile) {
 
 function dashboard(profile) {
   const platformData = profile.platforms;
+  const showBio = profile.bio.visible && profile.bio.text;
   return `
     <div class="site" id="top">
       <main id="content" class="dashboard-shell">
@@ -116,12 +117,12 @@ function dashboard(profile) {
           <div class="sidebar-contact"><p>Partnership enquiries</p><a href="mailto:business@bekyamon.live">business@bekyamon.live</a></div>
         </aside>
         <div class="dashboard-main">
-          <section class="dashboard-hero">
+          <section class="dashboard-hero${showBio ? '' : ' dashboard-hero--no-bio'}">
             <div class="dashboard-profile">
               <img src="${imageUrl('bekyamon-close.jpg')}" alt="Portrait of Bekyamon on the beach" />
-              <div><h1>Hi, I’m<br>Bekyamon.</h1></div>
+              <div><h1>hi, i'm<br>bekyamon</h1></div>
             </div>
-            <p class="dashboard-bio"><span>Placeholder bio —</span> UK creator with a sharp eye for the small moments. I make honest, personality-led content across style, culture and everyday life.</p>
+            ${showBio ? `<p class="dashboard-bio">${escapeHtml(profile.bio.text)}</p>` : ''}
             ${contactLinks()}
           </section>
           ${overview(profile)}

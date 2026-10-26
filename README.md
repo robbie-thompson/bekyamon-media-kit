@@ -7,11 +7,11 @@ A responsive creator media kit with a Cloudflare Worker, KV-backed live stats, a
 The Worker keeps shared stats/content separate from presentation layouts:
 
 - Shared data: combined metrics, platform metrics, audience breakdowns, handles, and content performance.
-- Per-link layout: platform order, visible platforms, visible metrics, audience rows, and visible content items.
+- Per-link layout: biography text and visibility, platform order, visible platforms, visible metrics, audience rows, and visible content items. The biography is empty and hidden by default.
 
 For example, an admin can create `twitch`, move Twitch to the top, hide Instagram, and publish the result at `/mediakit/twitch`. Updating Twitch followers later updates every presentation without changing their layouts.
 
-The biography, contact details, creator imagery, and collaboration strip remain static in the frontend.
+The contact details, creator imagery, and collaboration strip remain static in the frontend.
 
 ## Local development
 

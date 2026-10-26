@@ -74,6 +74,7 @@ export function adminPage() {
       if (!current) { $('#editor').innerHTML = '<p class="empty">Create a presentation link to begin.</p>'; return; }
       const byId = Object.fromEntries(state.data.platforms.map((item) => [item.id, item]));
       $('#editor').innerHTML = '<div class="page-heading"><div><span class="label">Presentation</span><h1>' + escapeAttr(current.name) + '</h1><p><a class="slug-link" href="' + escapeAttr(presentationPath(current.slug)) + '" target="_blank" rel="noopener">' + escapeAttr(presentationPath(current.slug)) + ' ↗</a></p></div>' + (current.slug === 'default' ? '' : '<button class="button danger" id="delete-layout">Delete presentation</button>') + '</div>' +
+        '<section class="panel"><div class="panel-title"><h2>Bio</h2><div class="toggle">' + check('Show section', current.bioVisible, 'layout.bioVisible') + '</div></div><div class="field"><label for="bio">Biography</label><input id="bio" type="text" data-path="layout.bio" value="' + escapeAttr(current.bio) + '"></div></section>' +
         '<section class="panel"><div class="panel-title"><h2>Combined overview</h2><div class="toggle">' + check('Show section', current.overviewVisible, 'layout.overviewVisible') + '</div></div><div class="grid-3">' + metric('Total followers', 'followers') + metric('90d views', 'views90d') + metric('90d engagement', 'engagement90d') + '</div></section>' +
         current.platformOrder.map((id, index) => platformEditor(byId[id], current, index)).join('');
     }

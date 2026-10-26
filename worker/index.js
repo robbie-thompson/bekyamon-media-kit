@@ -133,6 +133,7 @@ export function applyLayout(data, layout) {
     slug: layout.slug,
     name: layout.name,
     updatedLabel: data.updatedLabel,
+    bio: { text: layout.bio, visible: layout.bioVisible },
     overview: { ...data.overview, visible: layout.overviewVisible, metrics: layout.overviewMetrics },
     platforms,
   };
@@ -206,6 +207,8 @@ function validateLayout(input, slug) {
   return {
     slug,
     name: cleanText(input.name || slug, 80),
+    bio: String(input.bio ?? '').trim(),
+    bioVisible: input.bioVisible === true,
     overviewVisible: input.overviewVisible !== false,
     overviewMetrics: {
       followers: input.overviewMetrics?.followers !== false,
