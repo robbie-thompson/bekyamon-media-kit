@@ -26,12 +26,12 @@ Vite runs the static frontend and uses bundled starter stats when the Worker API
 
 This project deploys as a Worker with static assets, rather than as a standalone Pages project. The Worker serves:
 
-- `/mediakit/` — the default media kit
+- `/` — the default media kit
 - `/mediakit/:slug` — a saved presentation
 - `/api/mediakit/:slug` — its public JSON data
 - `/admindashboard` — the private editor
 
-The domain root is intentionally not used and returns a 404.
+The default media kit renders directly at `/` without a redirect. It uses bundled starter stats if its API data is unavailable.
 
 Create and deploy through the Cloudflare dashboard:
 

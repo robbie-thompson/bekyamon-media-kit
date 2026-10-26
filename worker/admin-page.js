@@ -60,12 +60,19 @@ export function adminPage() {
         if (error.message !== 'Unauthorized') $('#login-error').textContent = error.message;
       }
     }
+    /**
+     * Use the domain root for the default presentation.
+     */
+    function presentationPath(slug) {
+      return slug === 'default' ? '/' : '/mediakit/' + slug;
+    }
+
     function render() {
-      $('#layout-list').innerHTML = state.layouts.map((item) => '<button class="layout-tab ' + (item.slug === selectedSlug ? 'active' : '') + '" data-slug="' + escapeAttr(item.slug) + '"><span>' + escapeAttr(item.name) + '</span><small>/mediakit/' + escapeAttr(item.slug) + '</small></button>').join('');
+      $('#layout-list').innerHTML = state.layouts.map((item) => '<button class="layout-tab ' + (item.slug === selectedSlug ? 'active' : '') + '" data-slug="' + escapeAttr(item.slug) + '"><span>' + escapeAttr(item.name) + '</span><small>' + escapeAttr(presentationPath(item.slug)) + '</small></button>').join('');
       const current = layout();
       if (!current) { $('#editor').innerHTML = '<p class="empty">Create a presentation link to begin.</p>'; return; }
       const byId = Object.fromEntries(state.data.platforms.map((item) => [item.id, item]));
-      $('#editor').innerHTML = '<div class="page-heading"><div><span class="label">Presentation</span><h1>' + escapeAttr(current.name) + '</h1><p><a class="slug-link" href="/mediakit/' + escapeAttr(current.slug) + '" target="_blank" rel="noopener">/mediakit/' + escapeAttr(current.slug) + ' ↗</a></p></div>' + (current.slug === 'default' ? '' : '<button class="button danger" id="delete-layout">Delete presentation</button>') + '</div>' +
+      $('#editor').innerHTML = '<div class="page-heading"><div><span class="label">Presentation</span><h1>' + escapeAttr(current.name) + '</h1><p><a class="slug-link" href="' + escapeAttr(presentationPath(current.slug)) + '" target="_blank" rel="noopener">' + escapeAttr(presentationPath(current.slug)) + ' ↗</a></p></div>' + (current.slug === 'default' ? '' : '<button class="button danger" id="delete-layout">Delete presentation</button>') + '</div>' +
         '<section class="panel"><div class="panel-title"><h2>Combined overview</h2><div class="toggle">' + check('Show section', current.overviewVisible, 'layout.overviewVisible') + '</div></div><div class="grid-3">' + metric('Total followers', 'followers') + metric('Average views', 'avgViews') + metric('Average engagement', 'engagement') + '</div></section>' +
         current.platformOrder.map((id, index) => platformEditor(byId[id], current, index)).join('');
     }

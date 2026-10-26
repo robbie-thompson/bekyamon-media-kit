@@ -21,15 +21,14 @@ export default {
         return new Response(adminPage(), { headers: securityHeaders('text/html; charset=utf-8') });
       }
       if (url.pathname === '/') return env.ASSETS.fetch(request);
-      if (url.pathname === '/mediakit') return Response.redirect(`${url.origin}/mediakit/`, 302);
       if ((request.method === 'GET' || request.method === 'HEAD') && /^\/mediakit\/[a-z0-9-]+\/?$/.test(url.pathname)) {
-        const indexUrl = new URL('/mediakit/', url);
+        const indexUrl = new URL('/', url);
         return env.ASSETS.fetch(new Request(indexUrl, request));
       }
       if ((request.method === 'GET' || request.method === 'HEAD') && url.pathname.startsWith('/mediakit/')) {
         const asset = await env.ASSETS.fetch(request);
         if (asset.status !== 404) return asset;
-        const indexUrl = new URL('/mediakit/', url);
+        const indexUrl = new URL('/', url);
         return env.ASSETS.fetch(new Request(indexUrl, request));
       }
       return env.ASSETS.fetch(request);

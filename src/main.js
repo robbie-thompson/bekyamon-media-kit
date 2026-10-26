@@ -169,16 +169,26 @@ function presentationSlug() {
   return match?.[1] || 'default';
 }
 
+/**
+ * Load a presentation, with bundled starter data for the default media kit.
+ */
 async function loadMediaKit() {
   const slug = presentationSlug();
   try {
     const response = await fetch(`/api/mediakit/${encodeURIComponent(slug)}`);
-    if (response.status === 404) return null;
+    if (response.status === 404) {
+      // Keep the default media kit available when no saved presentation is returned.
+      if (slug === 'default') {
+        return fallbackProfile;
+      }
+
+      return null;
+    }
     if (!response.ok) throw new Error(`Media kit API returned ${response.status}`);
     return await response.json();
   } catch (error) {
     console.warn('Unable to load media kit data:', error);
-    return import.meta.env.DEV ? fallbackProfile : { loadError: true };
+    return slug === 'default' ? fallbackProfile : { loadError: true };
   }
 }
 

@@ -1,9 +1,9 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  base: '/mediakit/',
+  base: '/',
   build: {
-    outDir: 'dist/mediakit',
+    outDir: 'dist',
     emptyOutDir: true,
   },
 });

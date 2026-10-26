@@ -118,7 +118,7 @@ test('dashboard is served only from /admindashboard with image dropdowns', async
 
 test('nested media-kit routes fall back to the built SPA entry point', async () => {
   const runtime = env();
-  runtime.ASSETS.fetch = (request) => new URL(request.url).pathname === '/mediakit/'
+  runtime.ASSETS.fetch = (request) => new URL(request.url).pathname === '/'
     ? new Response('<main>media kit</main>', { headers: { 'content-type': 'text/html' } })
     : new Response('missing', { status: 404 });
   const response = await worker.fetch(new Request('https://example.com/mediakit/twitch'), runtime);
@@ -126,10 +126,14 @@ test('nested media-kit routes fall back to the built SPA entry point', async () 
   assert.match(await response.text(), /media kit/);
 });
 
-test('the domain root remains unclaimed and returns the static 404', async () => {
+test('the domain root serves the media kit without a redirect', async () => {
   const runtime = env();
-  runtime.ASSETS.fetch = () => new Response('not found', { status: 404 });
+  runtime.ASSETS.fetch = (request) => {
+    assert.equal(new URL(request.url).pathname, '/');
+    return new Response('<main>media kit</main>', { headers: { 'content-type': 'text/html' } });
+  };
   const response = await worker.fetch(new Request('https://example.com/'), runtime);
-  assert.equal(response.status, 404);
-  assert.equal(await response.text(), 'not found');
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get('location'), null);
+  assert.match(await response.text(), /media kit/);
 });
