@@ -143,8 +143,9 @@ h1, h2, h3, h4, p { margin: 0; }
   .dashboard-platform { padding: 55px 18px; }
   .dashboard-platform__header { align-items: flex-start; }
   .dashboard-grid { grid-template-columns: 1fr 1fr; }
-  .metric-card { grid-column: span 1; min-height: 155px; padding: 18px; }
-  .metric-card:last-of-type { grid-column: 1/-1; min-height: 120px; }
+  .metric-card { grid-column: 1/-1; min-height: 80px; padding: 16px 18px; flex-direction: row; align-items: center; justify-content: space-between; gap: 16px; }
+  .metric-card p { flex: 1; }
+  .metric-card strong { flex-shrink: 0; font-size: 32px; margin: 0; text-align: right; }
   .dashboard-audience, .dashboard-content { grid-column: 1/-1; }
   .dashboard-content { padding: 17px; }
   .dashboard-content-list article { grid-template-columns: 48px 1fr auto; gap: 10px; }
