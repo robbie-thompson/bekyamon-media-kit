@@ -4,12 +4,12 @@ import { PLATFORM_METRICS } from '../worker/default-data.js';
 const imageUrl = (filename) => `${import.meta.env.BASE_URL}images/${filename}`;
 
 const brands = [
-  { id: 'adobe', name: 'Adobe', logo: imageUrl('logos/adobe.svg') },
-  { id: 'spotify', name: 'Spotify', logo: imageUrl('logos/spotify.svg') },
-  { id: 'nike', name: 'Nike', logo: imageUrl('logos/nike.svg') },
-  { id: 'glossier', name: 'Glossier', logo: imageUrl('logos/glossier.svg') },
-  { id: 'logitech', name: 'Logitech', logo: imageUrl('logos/logitech.svg') },
-  { id: 'gymshark', name: 'Gymshark', logo: imageUrl('logos/gymshark.svg') },
+  { id: 'mojang', name: 'Mojang', logo: imageUrl('logos/mojang.svg') },
+  { id: 'doritos', name: 'Doritos', logo: imageUrl('logos/doritos.svg') },
+  { id: 'uber-eats', name: 'Uber Eats', logo: imageUrl('logos/uber-eats.svg') },
+  { id: 'xbox', name: 'Xbox', logo: imageUrl('logos/xbox.svg') },
+  { id: 'nintendo', name: 'Nintendo', logo: imageUrl('logos/nintendo.svg') },
+  { id: 'logi', name: 'Logi', logo: imageUrl('logos/logi.svg') },
 ];
 
 function icon(name, size = 16) {

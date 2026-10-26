@@ -25,7 +25,7 @@ img { display: block; width: 100%; }
 h1, h2, h3, h4, p { margin: 0; }
 .site { min-height: 100vh; overflow: clip; }
 .not-found { min-height: 100vh; padding: clamp(70px, 12vw, 160px) 5vw; background: #f1f1ed; }
-.not-found h1 { max-width: 850px; font: 600 clamp(48px, 8vw, 110px)/.9 var(--display); letter-spacing: -.07em; margin: 24px 0; }
+.not-found h1 { max-width: 850px; font: 600 clamp(48px, 8vw, 110px)/.9 var(--display); letter-spacing: -0.02em; margin: 24px 0; }
 .not-found > p:last-child { color: var(--muted); }
 .skip-link { position: fixed; left: 16px; top: -80px; z-index: 1000; background: var(--ink); color: white; padding: 12px 16px; text-decoration: none; }
 .skip-link:focus { top: 12px; }
@@ -42,13 +42,14 @@ h1, h2, h3, h4, p { margin: 0; }
 .brand-row { display: grid; grid-template-columns: repeat(6, 1fr); }
 .brand-mark { --logo-height: 30px; min-height: 64px; padding: 15px clamp(12px, 2vw, 30px); border-left: 1px solid var(--line); display: grid; place-items: center; }
 .brand-mark:first-child { border-left: 0; }
-.brand-mark img { width: auto; height: var(--logo-height); max-width: 112px; object-fit: contain; opacity: .57; }
-.brand-mark--adobe { --logo-height: 31px; }
-.brand-mark--spotify { --logo-height: 32px; }
-.brand-mark--nike { --logo-height: 18px; }
-.brand-mark--glossier { --logo-height: 34px; }
-.brand-mark--logitech { --logo-height: 34px; }
-.brand-mark--gymshark { --logo-height: 25px; }
+.brand-mark img { width: auto; height: var(--logo-height); max-width: min(112px, 100%); object-fit: contain; opacity: .57; }
+.brand-mark--mojang { --logo-height: 17px; }
+.brand-mark--doritos { --logo-height: 56px; }
+.brand-mark--doritos img { filter: grayscale(1); mix-blend-mode: multiply; }
+.brand-mark--uber-eats { --logo-height: 38px; }
+.brand-mark--xbox { --logo-height: 32px; }
+.brand-mark--nintendo { --logo-height: 24px; }
+.brand-mark--logi { --logo-height: 28px; }
 
 .platform-nav { display: flex; flex-direction: column; gap: 8px; }
 .platform-nav a { padding: 12px; border-radius: 5px; text-decoration: none; font-size: 12px; display: flex; gap: 8px; align-items: center; }
@@ -70,9 +71,10 @@ h1, h2, h3, h4, p { margin: 0; }
 .dashboard-hero { min-height: 460px; padding: 70px 4vw 45px; display: grid; grid-template-columns: 1.2fr .8fr; grid-template-rows: 1fr auto; gap: 30px 7vw; border-bottom: 1px solid var(--line); background: #f1f1ed; }
 .dashboard-profile { display: flex; gap: 35px; align-items: center; }
 .dashboard-profile img { width: 170px; height: 220px; object-fit: cover; border-radius: 4px; }
-.dashboard-profile h1 { font: 600 clamp(54px, 6vw, 94px)/.87 var(--display); letter-spacing: -.07em; margin-top: 22px; }
+.dashboard-profile h1 { font: 600 clamp(54px, 6vw, 94px)/.87 var(--display); letter-spacing: -0.02em; margin-top: 22px; }
 .dashboard-bio { align-self: center; font-size: 15px; color: var(--muted); line-height: 1.7; max-width: 500px; }
-.dashboard-bio span { color: var(--ink); font-weight: 600; }
+.dashboard-bio { white-space: pre-line; overflow-wrap: anywhere; }
+.dashboard-hero--no-bio { grid-template-columns: 1fr; }
 .dashboard-hero .contact-links { grid-column: 1/-1; justify-content: flex-end; }
 
 .overview-grid { display: grid; grid-template-columns: 1.4fr repeat(3, minmax(0, 1fr)); border-bottom: 1px solid var(--line); }
@@ -95,7 +97,7 @@ h1, h2, h3, h4, p { margin: 0; }
 .metric-card { grid-column: span var(--metric-span, 2); min-height: 190px; padding: 24px; display: flex; flex-direction: column; }
 .metric-card:only-child { grid-column: 1 / -1; }
 .metric-card p { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .09em; }
-.metric-card strong { font: 600 clamp(40px, 5vw, 68px)/1 var(--display); letter-spacing: -.07em; margin: auto 0 4px; }
+.metric-card strong { font: 600 clamp(40px, 5vw, 68px)/1 var(--display); letter-spacing: -0.02em; margin: auto 0 4px; }
 .metric-card--primary { background: var(--ink); color: var(--paper); }
 .metric-card--primary p { color: #adafa9; }
 .dashboard-audience { grid-column: span 3; padding: 24px; min-height: 250px; }
@@ -124,7 +126,7 @@ h1, h2, h3, h4, p { margin: 0; }
   .brand-strip { padding: 35px 18px; }
   .brand-row { grid-template-columns: repeat(3, 1fr); }
   .brand-mark { min-height: 58px; padding: 13px 18px; border-bottom: 1px solid var(--line); }
-  .brand-mark img { max-width: 92px; }
+  .brand-mark img { max-width: min(92px, 100%); }
   .brand-mark:nth-child(4) { border-left: 0; }
   .brand-mark:nth-child(n+4) { border-bottom: 0; }
   .dashboard-shell { display: block; }
