@@ -33,8 +33,10 @@ export const DEFAULT_DATA = {
   updatedLabel: 'October 2026',
   overview: {
     followers: '281.6K',
-    avgViews: '—',
-    engagement: '—',
+    // Sum 90-day views across all platforms, shown to two decimal places in millions.
+    views90d: '2.35M',
+    // Combine Instagram interactions and TikTok likes.
+    engagement90d: '78.6K',
   },
   platforms: [
     {
@@ -111,7 +113,7 @@ export function defaultLayout(slug = 'default', name = 'Default') {
     slug,
     name,
     overviewVisible: true,
-    overviewMetrics: { followers: true, avgViews: true, engagement: true },
+    overviewMetrics: { followers: true, views90d: true, engagement90d: true },
     platformOrder: [...PLATFORM_IDS],
     platforms: Object.fromEntries(PLATFORM_IDS.map((id) => [id, {
       visible: true,

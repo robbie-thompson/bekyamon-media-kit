@@ -175,8 +175,8 @@ function validateData(input) {
     updatedLabel: cleanText(input.updatedLabel || '', 40),
     overview: {
       followers: cleanText(input.overview.followers, 30),
-      avgViews: cleanText(input.overview.avgViews, 30),
-      engagement: cleanText(input.overview.engagement, 30),
+      views90d: cleanText(input.overview.views90d, 30),
+      engagement90d: cleanText(input.overview.engagement90d, 30),
     },
     platforms,
   };
@@ -209,8 +209,8 @@ function validateLayout(input, slug) {
     overviewVisible: input.overviewVisible !== false,
     overviewMetrics: {
       followers: input.overviewMetrics?.followers !== false,
-      avgViews: input.overviewMetrics?.avgViews !== false,
-      engagement: input.overviewMetrics?.engagement !== false,
+      views90d: input.overviewMetrics?.views90d !== false,
+      engagement90d: input.overviewMetrics?.engagement90d !== false,
     },
     platformOrder,
     platforms,

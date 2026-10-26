@@ -96,8 +96,8 @@ function overview(profile) {
   if (!profile.overview.visible) return '';
   const metrics = [
     ['followers', 'Total followers'],
-    ['avgViews', 'Avg. views'],
-    ['engagement', 'Avg. engagement'],
+    ['views90d', '90d views'],
+    ['engagement90d', '90d engagement'],
   ].filter(([key]) => profile.overview.metrics[key]);
   return `<section class="overview-grid overview-grid--${metrics.length}" aria-label="Combined audience overview">
     <div class="overview-title"><h2>Combined reach</h2></div>
