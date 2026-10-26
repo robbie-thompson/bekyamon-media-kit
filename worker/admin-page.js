@@ -17,14 +17,14 @@ export function adminPage() {
 <body>
   <section id="login" class="login">
     <form id="login-form" class="login-card">
-      <span class="label">Private dashboard</span><h1>Media kit admin</h1><p>Enter the dashboard password to manage stats and presentation links.</p>
+      <span class="label">Private dashboard</span><h1>Media kit admin</h1><p>Enter the dashboard password to manage stats and media kit links.</p>
       <div class="field"><label for="password">Password</label><input id="password" type="password" required autocomplete="current-password"></div>
       <button class="button primary" type="submit">Log in</button><p id="login-error" class="error" role="alert"></p>
     </form>
   </section>
   <section id="app" class="shell hidden">
     <header class="topbar"><span class="brand">bekyamon</span><small>Media kit admin</small><div class="topbar-actions"><button id="save" class="button primary">Save changes</button><button id="logout" class="button">Log out</button></div></header>
-    <div class="workspace"><aside class="sidebar"><div class="sidebar-heading"><h2>Presentation links</h2><button id="add-layout" class="icon-button" title="Create presentation">+</button></div><div id="layout-list" class="layout-list"></div></aside><main id="editor" class="main"></main></div>
+    <div class="workspace"><aside class="sidebar"><div class="sidebar-heading"><h2>Media kit links</h2><button id="add-layout" class="icon-button" title="Create media kit">+</button></div><div id="layout-list" class="layout-list"></div></aside><main id="editor" class="main"></main></div>
   </section>
   <div id="notice" class="notice hidden" role="status"></div>
   <script>
@@ -62,21 +62,21 @@ export function adminPage() {
       }
     }
     /**
-     * Build an explicit presentation URL for every media kit.
+     * Build an explicit media kit URL for every media kit.
      */
-    function presentationPath(slug) {
+    function mediaKitPath(slug) {
       return '/mediakit/' + slug;
     }
 
     function render() {
       $('#layout-list').innerHTML = state.layouts.map((item) =>
-        '<div class="layout-row ' + (item.slug === selectedSlug ? 'active' : '') + '"><button class="layout-tab" data-slug="' + escapeAttr(item.slug) + '"><span>' + escapeAttr(item.name) + '</span><small>' + escapeAttr(presentationPath(item.slug)) + '</small></button>' +
-        '<button class="duplicate-layout" data-duplicate="' + escapeAttr(item.slug) + '" aria-label="Duplicate ' + escapeAttr(item.name) + '" title="Duplicate presentation"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button></div>'
+        '<div class="layout-row ' + (item.slug === selectedSlug ? 'active' : '') + '"><button class="layout-tab" data-slug="' + escapeAttr(item.slug) + '"><span>' + escapeAttr(item.name) + '</span><small>' + escapeAttr(mediaKitPath(item.slug)) + '</small></button>' +
+        '<button class="duplicate-layout" data-duplicate="' + escapeAttr(item.slug) + '" aria-label="Duplicate ' + escapeAttr(item.name) + '" title="Duplicate media kit"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button></div>'
       ).join('');
       const current = layout();
-      if (!current) { $('#editor').innerHTML = '<p class="empty">Create a presentation link to begin.</p>'; return; }
+      if (!current) { $('#editor').innerHTML = '<p class="empty">Create a media kit link to begin.</p>'; return; }
       const byId = Object.fromEntries(state.data.platforms.map((item) => [item.id, item]));
-      $('#editor').innerHTML = '<div class="page-heading"><div><span class="label">Presentation</span><h1>' + escapeAttr(current.name) + '</h1><p><a class="slug-link" href="' + escapeAttr(presentationPath(current.slug)) + '" target="_blank" rel="noopener">' + escapeAttr(presentationPath(current.slug)) + ' ↗</a></p></div>' + (current.slug === 'default' ? '' : '<button class="button danger" id="delete-layout">Delete presentation</button>') + '</div>' +
+      $('#editor').innerHTML = '<div class="page-heading"><div><span class="label">Media kit</span><h1>' + escapeAttr(current.name) + '</h1><p><a class="slug-link" href="' + escapeAttr(mediaKitPath(current.slug)) + '" target="_blank" rel="noopener">' + escapeAttr(mediaKitPath(current.slug)) + ' ↗</a></p></div>' + (current.slug === 'default' ? '' : '<button class="button danger" id="delete-layout">Delete media kit</button>') + '</div>' +
         '<section class="panel"><div class="panel-title"><h2>Bio</h2><div class="toggle">' + check('Show section', current.bioVisible, 'layout.bioVisible') + '</div></div><div class="field"><label for="bio">Biography</label><input id="bio" type="text" data-path="layout.bio" value="' + escapeAttr(current.bio) + '"></div></section>' +
         '<section class="panel"><div class="panel-title"><h2>Combined overview</h2><div class="toggle">' + check('Show section', current.overviewVisible, 'layout.overviewVisible') + '</div></div><div class="grid-3">' + metric('Total followers', 'followers') + metric('90d views', 'views90d') + metric('90d engagement', 'engagement90d') + '</div></section>' +
         current.platformOrder.map((id, index) => platformEditor(byId[id], current, index)).join('');
@@ -103,10 +103,10 @@ export function adminPage() {
     $('#login-form').addEventListener('submit', async (event) => { event.preventDefault(); $('#login-error').textContent = ''; try { await api('/api/admin/login', { method:'POST', body:JSON.stringify({ password:$('#password').value }) }); $('#password').value=''; await load(); } catch(error) { $('#login-error').textContent = error.message; } });
     $('#logout').addEventListener('click', async () => { await api('/api/admin/logout', { method:'POST' }); location.reload(); });
     /**
-     * Start an unsaved presentation using the supplied layout's current settings.
+     * Start an unsaved media kit using the supplied layout's current settings.
      */
     function createLayout(source, suggestedName = '') {
-      const name = prompt('Name this presentation (for example, Twitch pitch)', suggestedName);
+      const name = prompt('Name this media kit (for example, Twitch pitch)', suggestedName);
 
       if (!name) {
         return;
@@ -131,7 +131,7 @@ export function adminPage() {
       state.layouts.push(template);
       selectedSlug = slug;
       render();
-      notify('Presentation created — save to publish it');
+      notify('Media kit created — save to publish it');
     }
 
     $('#layout-list').addEventListener('click', (event) => {
@@ -153,7 +153,7 @@ export function adminPage() {
       render();
     });
     $('#add-layout').addEventListener('click', () => createLayout(layout() || state.defaultLayout));
-    $('#editor').addEventListener('click', (event) => { const move = event.target.closest('[data-move]'); if (move) { const id = move.closest('[data-platform]').dataset.platform; const order = layout().platformOrder; const from = order.indexOf(id); const to = move.dataset.move === 'up' ? from - 1 : from + 1; if (to >= 0 && to < order.length) { [order[from],order[to]]=[order[to],order[from]]; render(); } return; } if (event.target.id === 'delete-layout') { if (!confirm('Delete this presentation link?')) return; const removed = selectedSlug; state.layouts = state.layouts.filter((item) => item.slug !== removed); selectedSlug = state.layouts[0]?.slug || null; api('/api/admin/layout/' + encodeURIComponent(removed), {method:'DELETE'}).then(() => { render(); notify('Presentation deleted'); }).catch((error) => notify(error.message)); } });
+    $('#editor').addEventListener('click', (event) => { const move = event.target.closest('[data-move]'); if (move) { const id = move.closest('[data-platform]').dataset.platform; const order = layout().platformOrder; const from = order.indexOf(id); const to = move.dataset.move === 'up' ? from - 1 : from + 1; if (to >= 0 && to < order.length) { [order[from],order[to]]=[order[to],order[from]]; render(); } return; } if (event.target.id === 'delete-layout') { if (!confirm('Delete this media kit link?')) return; const removed = selectedSlug; state.layouts = state.layouts.filter((item) => item.slug !== removed); selectedSlug = state.layouts[0]?.slug || null; api('/api/admin/layout/' + encodeURIComponent(removed), {method:'DELETE'}).then(() => { render(); notify('Media kit deleted'); }).catch((error) => notify(error.message)); } });
     $('#save').addEventListener('click', async () => { const button=$('#save'); button.disabled=true; try { await api('/api/admin/data',{method:'PUT',body:JSON.stringify(state.data)}); await Promise.all(state.layouts.map((item)=>api('/api/admin/layout/'+encodeURIComponent(item.slug),{method:'PUT',body:JSON.stringify(item)}))); state.data.updatedLabel = new Date().toLocaleDateString('en-GB',{month:'long',year:'numeric'}); notify('Changes published'); } catch(error) { notify(error.message); } finally { button.disabled=false; } });
     load();
   })();

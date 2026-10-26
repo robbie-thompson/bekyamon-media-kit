@@ -34,7 +34,7 @@ async function handleRequest(request, env) {
     if (url.pathname === '/admindashboard' || url.pathname === '/admindashboard/') {
       return new Response(adminPage(), { headers: securityHeaders('text/html; charset=utf-8') });
     }
-    // Reject URLs without a presentation slug before serving static assets.
+    // Reject URLs without a media kit slug before serving static assets.
     if (['/', '/index.html', '/mediakit', '/mediakit/', '/mediakit/index.html'].includes(url.pathname)) {
       return new Response(request.method === 'HEAD' ? null : 'Not found', { status: 404 });
     }
@@ -62,7 +62,7 @@ async function apiRouter(request, env, url) {
 
   if (method === 'GET' && url.pathname.startsWith('/api/mediakit/')) {
     const slug = normaliseSlug(url.pathname.slice('/api/mediakit/'.length));
-    if (!slug) return json({ error: 'Invalid presentation slug' }, 400);
+    if (!slug) return json({ error: 'Invalid media kit slug' }, 400);
     return publicMediaKit(env, slug);
   }
 
@@ -99,14 +99,14 @@ async function apiRouter(request, env, url) {
   const layoutMatch = url.pathname.match(/^\/api\/admin\/layout\/([^/]+)$/);
   if (layoutMatch) {
     const slug = normaliseSlug(layoutMatch[1]);
-    if (!slug) return json({ error: 'Invalid presentation slug' }, 400);
+    if (!slug) return json({ error: 'Invalid media kit slug' }, 400);
     if (method === 'PUT') {
       const layout = validateLayout(await readJson(request), slug);
       await env.MEDIA_KIT_KV.put(`${LAYOUT_PREFIX}${slug}`, JSON.stringify(layout));
       return json({ ok: true, layout });
     }
     if (method === 'DELETE') {
-      if (slug === 'default') return json({ error: 'The default presentation cannot be deleted' }, 400);
+      if (slug === 'default') return json({ error: 'The default media kit cannot be deleted' }, 400);
       await env.MEDIA_KIT_KV.delete(`${LAYOUT_PREFIX}${slug}`);
       return new Response(null, { status: 204, headers: jsonHeaders });
     }
@@ -120,7 +120,7 @@ async function publicMediaKit(env, slug) {
     env.MEDIA_KIT_KV.get(`${LAYOUT_PREFIX}${slug}`, 'json'),
   ]);
   const layout = storedLayout || (slug === 'default' ? defaultLayout() : null);
-  if (!layout) return json({ error: 'Presentation not found' }, 404);
+  if (!layout) return json({ error: 'Media kit not found' }, 404);
   const profile = applyLayout(data, validateLayout(layout, slug));
   return json(profile, 200, { 'cache-control': 'public, max-age=30, stale-while-revalidate=120' });
 }
@@ -153,7 +153,7 @@ export function applyLayout(data, layout) {
 }
 
 /**
- * Load saved stats and seed X / Twitter for presentations saved before its addition.
+ * Load saved stats and seed X / Twitter for media kits saved before its addition.
  */
 async function readData(env) {
   const stored = await env.MEDIA_KIT_KV.get(DATA_KEY, 'json');

@@ -150,17 +150,17 @@ function dashboard(profile) {
     </div>`;
 }
 
-function presentationSlug() {
+function mediaKitSlug() {
   const path = window.location.pathname.replace(/\/+$/, '');
   const match = path.match(/^\/mediakit\/([a-z0-9-]+)$/);
   return match?.[1] || null;
 }
 
 /**
- * Load only the presentation explicitly selected by the URL.
+ * Load only the media kit explicitly selected by the URL.
  */
 async function loadMediaKit() {
-  const slug = presentationSlug();
+  const slug = mediaKitSlug();
 
   if (!slug) {
     return null;
@@ -190,6 +190,6 @@ loadMediaKit().then((profile) => {
     ? unavailable('Temporarily unavailable', 'The live stats couldn’t be loaded.', 'Please refresh in a moment or ask for an updated link.')
     : profile
       ? dashboard(profile)
-      : unavailable('Presentation not found', 'This media-kit link isn’t available.', 'Please check the URL or ask for an updated link.');
+      : unavailable('Media kit not found', 'This media-kit link isn’t available.', 'Please check the URL or ask for an updated link.');
   createIcons({ icons: { Mail, ArrowUpRight, MapPin, Users, Instagram, Youtube, Twitch, Twitter, Music2 } });
 });

@@ -1,15 +1,15 @@
 # Bekyamon Media Kit
 
-A responsive creator media kit with a Cloudflare Worker, KV-backed live stats, and a password-protected presentation editor.
+A responsive creator media kit with a Cloudflare Worker, KV-backed live stats, and a password-protected media kit editor.
 
 ## What is configurable
 
-The Worker keeps shared stats/content separate from presentation layouts:
+The Worker keeps shared stats/content separate from media kit layouts:
 
 - Shared data: combined metrics, platform metrics, audience breakdowns, handles, and content performance.
 - Per-link layout: biography text and visibility, platform order, visible platforms, visible metrics, audience rows, and visible content items. The biography is empty and hidden by default.
 
-For example, an admin can create `twitch`, move Twitch to the top, hide Instagram, and publish the result at `/mediakit/twitch`. Updating Twitch followers later updates every presentation without changing their layouts.
+For example, an admin can create `twitch`, move Twitch to the top, hide Instagram, and publish the result at `/mediakit/twitch`. Updating Twitch followers later updates every media kit without changing their layouts.
 
 The contact details, creator imagery, and collaboration strip remain static in the frontend.
 
@@ -33,11 +33,11 @@ Run only `npm run dev`. `npm run dev:worker` is an alias for the same command, s
 This project deploys as a Worker with static assets, rather than as a standalone Pages project. The Worker serves:
 
 - `/mediakit/default` — the default media kit
-- `/mediakit/:slug` — a saved presentation
+- `/mediakit/:slug` — a saved media kit
 - `/api/mediakit/:slug` — its public JSON data
 - `/admindashboard` — the private editor
 
-A presentation slug is required in every media-kit URL. `/`, `/mediakit`, and `/mediakit/` return 404.
+A media kit slug is required in every media-kit URL. `/`, `/mediakit`, and `/mediakit/` return 404.
 
 Create and deploy through the Cloudflare dashboard:
 

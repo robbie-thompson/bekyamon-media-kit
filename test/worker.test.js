@@ -35,7 +35,7 @@ test('layout filtering controls order, sections and individual content', () => {
   assert.deepEqual(result.platforms[0].content.map(({ id }) => id), ['twitch-1', 'twitch-3']);
 });
 
-test('public API returns default data and rejects unknown presentation slugs', async () => {
+test('public API returns default data and rejects unknown media kit slugs', async () => {
   const runtime = env();
   const defaultResponse = await worker.fetch(new Request('https://example.com/api/mediakit/default'), runtime);
   assert.equal(defaultResponse.status, 200);
@@ -116,7 +116,7 @@ test('saved stats and layouts load X / Twitter without replacing existing edits'
   assert.equal(profile.platforms[4].impressions90d, '1.2M');
 });
 
-test('bios save per presentation with independent visibility and empty defaults', async () => {
+test('bios save per media kit with independent visibility and empty defaults', async () => {
   const runtime = env();
   const login = await worker.fetch(new Request('https://example.com/api/admin/login', {
     method: 'POST',
@@ -181,7 +181,7 @@ test('password login issues a session that can read and update admin state', asy
   assert.equal(JSON.parse(runtime.MEDIA_KIT_KV.entries.get('mediakit:data')).overview.followers, '2M');
 });
 
-test('admin state always includes the non-deletable default presentation', async () => {
+test('admin state always includes the non-deletable default media kit', async () => {
   const runtime = env({
     'mediakit:layout:twitch': JSON.stringify(defaultLayout('twitch', 'Twitch')),
   });
@@ -248,7 +248,7 @@ test('default and saved media-kit routes serve the app entry point', async () =>
   }
 });
 
-test('media-kit URLs require an explicit presentation slug', async () => {
+test('media-kit URLs require an explicit media kit slug', async () => {
   const runtime = env();
   runtime.ASSETS.fetch = () => {
     assert.fail('Slugless URLs must not serve the app entry point');
