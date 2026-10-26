@@ -14,34 +14,47 @@ const jsonHeaders = {
 
 export default {
   async fetch(request, env) {
-    const url = new URL(request.url);
-    try {
-      if (url.pathname.startsWith('/api/')) return await apiRouter(request, env, url);
-      if (url.pathname === '/admindashboard' || url.pathname === '/admindashboard/') {
-        return new Response(adminPage(), { headers: securityHeaders('text/html; charset=utf-8') });
-      }
-      // Reject URLs without a presentation slug before serving static assets.
-      if (['/', '/index.html', '/mediakit', '/mediakit/', '/mediakit/index.html'].includes(url.pathname)) {
-        return new Response(request.method === 'HEAD' ? null : 'Not found', { status: 404 });
-      }
+    const response = await handleRequest(request, env);
 
-      const isMediaKitPage = /^\/mediakit\/[a-z0-9-]+\/?$/.test(url.pathname);
-      const isPageRequest = request.method === 'GET' || request.method === 'HEAD';
+    // Copy immutable asset headers before applying the site-wide indexing policy.
+    const result = new Response(response.body, response);
+    result.headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive, noimageindex');
 
-      if (isPageRequest && isMediaKitPage) {
-        // Vite serves the source entry at root, while production uses the build directory.
-        const indexPath = import.meta.env?.DEV ? '/' : '/mediakit/';
-        const indexUrl = new URL(indexPath, url);
-        return env.ASSETS.fetch(new Request(indexUrl, request));
-      }
-
-      return env.ASSETS.fetch(request);
-    } catch (error) {
-      if (!error.status) console.error(error);
-      return json({ error: error.status ? error.message : 'Internal server error' }, error.status || 500);
-    }
+    return result;
   },
 };
+
+/**
+ * Route requests before applying the indexing policy to every response.
+ */
+async function handleRequest(request, env) {
+  const url = new URL(request.url);
+  try {
+    if (url.pathname.startsWith('/api/')) return await apiRouter(request, env, url);
+    if (url.pathname === '/admindashboard' || url.pathname === '/admindashboard/') {
+      return new Response(adminPage(), { headers: securityHeaders('text/html; charset=utf-8') });
+    }
+    // Reject URLs without a presentation slug before serving static assets.
+    if (['/', '/index.html', '/mediakit', '/mediakit/', '/mediakit/index.html'].includes(url.pathname)) {
+      return new Response(request.method === 'HEAD' ? null : 'Not found', { status: 404 });
+    }
+
+    const isMediaKitPage = /^\/mediakit\/[a-z0-9-]+\/?$/.test(url.pathname);
+    const isPageRequest = request.method === 'GET' || request.method === 'HEAD';
+
+    if (isPageRequest && isMediaKitPage) {
+      // Vite serves the source entry at root, while production uses the build directory.
+      const indexPath = import.meta.env?.DEV ? '/' : '/mediakit/';
+      const indexUrl = new URL(indexPath, url);
+      return env.ASSETS.fetch(new Request(indexUrl, request));
+    }
+
+    return env.ASSETS.fetch(request);
+  } catch (error) {
+    if (!error.status) console.error(error);
+    return json({ error: error.status ? error.message : 'Internal server error' }, error.status || 500);
+  }
+}
 
 async function apiRouter(request, env, url) {
   if (!env.MEDIA_KIT_KV) return json({ error: 'MEDIA_KIT_KV binding is not configured' }, 503);

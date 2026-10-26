@@ -6,7 +6,7 @@ export function adminPage() {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="robots" content="noindex,nofollow">
+  <meta name="robots" content="noindex, nofollow, noarchive, noimageindex">
   <title>bekyamon media kit - Admin</title>
   <style>
     :root{color-scheme:light;--ink:#20211f;--paper:#e8e8e3;--card:#f4f4f0;--line:#cdcec8;--muted:#6d706b;--accent:#20211f;font:14px/1.45 system-ui,-apple-system,sans-serif;color:var(--ink);background:var(--paper)}

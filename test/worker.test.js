@@ -262,3 +262,31 @@ test('media-kit URLs require an explicit presentation slug', async () => {
     }
   }
 });
+
+test('indexing is disabled for pages, APIs, assets and error responses', async () => {
+  const runtime = env();
+  runtime.ASSETS.fetch = () => Response.json({ asset: true }, {
+    headers: { 'cache-control': 'public, max-age=3600' },
+  });
+
+  const paths = [
+    '/mediakit/default',
+    '/admindashboard',
+    '/api/mediakit/default',
+    '/api/mediakit/missing',
+    '/api/admin/state',
+    '/mediakit/images/bekyamon-close.jpg',
+    '/',
+  ];
+
+  for (const path of paths) {
+    for (const method of ['GET', 'HEAD']) {
+      const response = await worker.fetch(new Request(`https://example.com${path}`, { method }), runtime);
+      assert.equal(response.headers.get('x-robots-tag'), 'noindex, nofollow, noarchive, noimageindex', `${method} ${path}`);
+    }
+  }
+
+  const asset = await worker.fetch(new Request('https://example.com/mediakit/images/bekyamon-close.jpg'), runtime);
+  assert.equal(asset.headers.get('cache-control'), 'public, max-age=3600');
+  assert.deepEqual(await asset.json(), { asset: true });
+});
