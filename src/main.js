@@ -61,13 +61,29 @@ function footer() {
     </footer>`;
 }
 
+/**
+ * Build the social profile link from the platform's current handle.
+ */
+function platformUrl(platform) {
+  const handle = encodeURIComponent(platform.handle.replace(/^@/, ''));
+  const profileRoots = {
+    instagram: 'https://www.instagram.com/',
+    tiktok: 'https://www.tiktok.com/@',
+    youtube: 'https://www.youtube.com/@',
+    twitch: 'https://www.twitch.tv/',
+    twitter: 'https://x.com/',
+  };
+
+  return `${profileRoots[platform.id]}${handle}`;
+}
+
 function dashboardPlatform(platform, index) {
   const metrics = PLATFORM_METRICS[platform.id]
     .filter(([key]) => platform.visible.metrics[key]);
   return `
     <section class="dashboard-platform platform-section" id="${platform.id}">
       <div class="dashboard-platform__header">
-        <div class="dashboard-platform__title"><span>${icon(platform.icon, 22)}</span><div><p class="eyebrow">0${index + 1}${platform.visible.handle ? ` · ${escapeHtml(platform.handle)}` : ''}</p><h2>${escapeHtml(platform.name)}</h2></div></div>
+        <a class="dashboard-platform__title" href="${escapeHtml(platformUrl(platform))}" target="_blank" rel="noreferrer"><span>${icon(platform.icon, 22)}</span><div><p class="eyebrow">0${index + 1}${platform.visible.handle ? ` · ${escapeHtml(platform.handle)}` : ''}</p><h2>${escapeHtml(platform.name)}</h2></div></a>
       </div>
       <div class="dashboard-grid" style="--metric-span: ${6 / (metrics.length || 1)}">
         ${metrics.map(([key, label], metricIndex) => `<div class="metric-card ${metricIndex === 0 ? 'metric-card--primary' : ''}"><p>${label}</p><strong>${escapeHtml(platform[key] || '—')}</strong></div>`).join('')}

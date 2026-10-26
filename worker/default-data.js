@@ -128,7 +128,7 @@ export const DEFAULT_DATA = {
     {
       id: 'youtube',
       name: 'YouTube',
-      handle: '@bekyamonlive',
+      handle: '@bekyamon',
       icon: 'youtube',
       // Sum channel counts and take a simple mean of their audience percentages.
       followers: '41.4K',
