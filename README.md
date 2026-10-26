@@ -74,7 +74,7 @@ Skip the copy if `.dev.vars` already exists. Set `DASHBOARD_PASSWORD` in `.dev.v
 
 ## Default content sources
 
-Content was checked in the internal browser on 26 October 2026. Each platform uses its three latest public uploads in newest-first order. YouTube uses the `@bekyamonlive` VOD channel, whose latest videos are newer than its Shorts. Twitch uses past broadcasts sorted by date. View counts are a snapshot of the public display, including platform rounding. Instagram does not expose views on these public reel pages, so its entries show `Not public` rather than likes or estimated views.
+Content was checked in the internal browser on 26 October 2026. Each platform uses its three latest public uploads in newest-first order. YouTube uses the `@bekyamonlive` VOD channel, whose latest videos are newer than its Shorts. Twitch uses past broadcasts sorted by date. View counts are a snapshot of the public display, including platform rounding, except Instagram reel views, which were provided by the user.
 
 | Platform | Latest | Second latest | Third latest |
 | --- | --- | --- | --- |

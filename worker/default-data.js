@@ -62,26 +62,26 @@ export const DEFAULT_DATA = {
       locations: [['United States', 30], ['United Kingdom', 25], ['Australia', 5]],
       genders: [['Women', 67], ['Men', 33]],
       content: [
-        // Public reel pages expose likes, but do not expose view counts.
+        // Reel view counts supplied by the user on 26 October 2026.
         {
           id: 'instagram-1',
           title: 'an update on my big move!!! more to come soon :)',
           format: 'Reel · 3 Oct 2026',
-          views: 'Not public',
+          views: '66.2K',
           image: 'content/instagram-1.jpg',
         },
         {
           id: 'instagram-2',
           title: 'mix and match your perfect loadout in Minecraft Dungeons II, out NOW!',
           format: 'Reel · Ad · 1 Oct 2026',
-          views: 'Not public',
+          views: '20.2K',
           image: 'content/instagram-2.jpg',
         },
         {
           id: 'instagram-3',
           title: "find out everything that's NEW in Minecraft Dungeons II, out NOW!!",
           format: 'Reel · Ad · 30 Sep 2026',
-          views: 'Not public',
+          views: '23.4K',
           image: 'content/instagram-3.jpg',
         },
       ],
