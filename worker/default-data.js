@@ -18,7 +18,7 @@ export const PLATFORM_METRICS = {
   ],
   twitch: [
     ['followers', 'Followers'],
-    ['totalViews90d', '90d total views'],
+    ['totalViews90d', '90d views'],
     ['avgViewers90d', '90d avg. viewers'],
   ],
   twitter: [
