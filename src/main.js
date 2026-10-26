@@ -83,7 +83,7 @@ function dashboardPlatform(platform, index) {
   return `
     <section class="dashboard-platform platform-section" id="${platform.id}">
       <div class="dashboard-platform__header">
-        <a class="dashboard-platform__title" href="${escapeHtml(platformUrl(platform))}" target="_blank" rel="noreferrer"><span>${icon(platform.icon, 22)}</span><div><p class="eyebrow">0${index + 1}${platform.visible.handle ? ` · ${escapeHtml(platform.handle)}` : ''}</p><h2>${escapeHtml(platform.name)}</h2></div></a>
+        <a class="dashboard-platform__title" href="${escapeHtml(platformUrl(platform))}" target="_blank" rel="noreferrer"><span>${icon(platform.icon, 22)}</span><div><p class="eyebrow">0${index + 1}${platform.visible.handle ? ` - ${escapeHtml(platform.handle)}` : ''}</p><h2>${escapeHtml(platform.name)}</h2></div></a>
       </div>
       <div class="dashboard-grid" style="--metric-span: ${6 / (metrics.length || 1)}">
         ${metrics.map(([key, label], metricIndex) => `<div class="metric-card ${metricIndex === 0 ? 'metric-card--primary' : ''}"><p>${label}</p><strong>${escapeHtml(platform[key] || '—')}</strong></div>`).join('')}
